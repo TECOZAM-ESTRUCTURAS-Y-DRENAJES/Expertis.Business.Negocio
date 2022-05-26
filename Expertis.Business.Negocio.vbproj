@@ -1,0 +1,1241 @@
+﻿<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{05382C31-ADB6-42C1-9F9C-85049D93571D}</ProjectGuid>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccProvider>
+    </SccProvider>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Expertis.Business.Negocio</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <OptionCompare>Text</OptionCompare>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>Off</OptionStrict>
+    <RootNamespace>Solmicro.Expertis.Business.Negocio</RootNamespace>
+    <StartupObject>Solmicro.Expertis.Business.Negocio.%28Ninguno%29</StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <MyType>Windows</MyType>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccAuxPath>
+    </SccAuxPath>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\..\..\..\Bin\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\..\..\..\..\..\..\..\ExpertisNet50R2test\Bin\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DebbugingMode = 0 : Win32 = True</DefineConstants>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032</NoWarn>
+    <DebugType>full</DebugType>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Expertis.Business.BusinessEnum">
+      <Name>Expertis.Business.BusinessEnum</Name>
+      <HintPath>..\..\..\ExpertisNet\Bin\Expertis.Business.BusinessEnum.dll</HintPath>
+      <AssemblyFolderKey>hklm\expertis.engine</AssemblyFolderKey>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Expertis.Business.ClasesTecozam, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Expertis.Business.General, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Expertis.Business.Obra, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Expertis.Engine.BE.BusinessEngine, Version=5.0.0.0, Culture=neutral, PublicKeyToken=f4e70a047dadc395, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Expertis.Engine.DAL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+      <HintPath>..\..\Bin\Expertis.Engine.DAL.dll</HintPath>
+    </Reference>
+    <Reference Include="Expertis.Engine.Global, Version=5.0.0.0, Culture=neutral, PublicKeyToken=f4e70a047dadc395, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic.Compatibility">
+      <Name>Microsoft.VisualBasic.Compatibility</Name>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic.Compatibility.Data" />
+    <Reference Include="System">
+      <Name>System</Name>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="Microsoft.VisualBasic.Compatibility" />
+    <Import Include="ProcessRuntime" />
+    <Import Include="Solmicro.Expertis.Business.BusinessEnum" />
+    <Import Include="Solmicro.Expertis.Business.General" />
+    <Import Include="Solmicro.Expertis.Engine" />
+    <Import Include="Solmicro.Expertis.Engine.BE" />
+    <Import Include="Solmicro.Expertis.Engine.BE.BusinessEngine" />
+    <Import Include="Solmicro.Expertis.Engine.BE.BusinessProcesses" />
+    <Import Include="Solmicro.Expertis.Engine.DAL" />
+    <Import Include="Solmicro.Expertis.Engine.Global" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActividadesEspeciales.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Activo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ActivoCaracteristica.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ActivoEstructura.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ActivoRepuesto.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Agrupacion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AlbaranCompraAnalitica.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AlbaranCompraCabecera.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AlbaranCompraDevolucion.vb" />
+    <Compile Include="AlbaranCompraLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AlbaranCompraLote.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AlbaranCompraPrecio.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AlbaranCompra\AlbCabCompra.vb" />
+    <Compile Include="AlbaranCompra\AlbCabPedidoCompra.vb" />
+    <Compile Include="AlbaranCompra\AlbLinPedidoCompra.vb" />
+    <Compile Include="AlbaranCompra\DataPrcAlbaranarPedCompra.vb" />
+    <Compile Include="AlbaranCompra\DocumentoAlbaranCompra.vb" />
+    <Compile Include="AlbaranVentaNSerie.vb" />
+    <Compile Include="AlbaranVenta\AbonosDistrib\AlbCabVentaAlbaran.vb" />
+    <Compile Include="AlbaranVenta\AbonosDistrib\DataPrcCrearAlbaranVentaAbono.vb" />
+    <Compile Include="AlbaranVenta\AbonosDistrib\PrcAlbaranarEntregasDistrib.vb" />
+    <Compile Include="AlbaranVenta\AbonosDistrib\PrcCrearAlbaranVentaAbono.vb" />
+    <Compile Include="AlbaranVenta\AbonosDistrib\ProcessInfoAVDistrib.vb" />
+    <Compile Include="AlbaranVenta\AlbLinVenta.vb" />
+    <Compile Include="AlbaranVenta\AlbaranVentaSeguimiento.vb" />
+    <Compile Include="AlbaranVenta\Alquileres\AlbCabVentaAlquiler.vb" />
+    <Compile Include="AlbaranVenta\Alquileres\AlbCabVentaMaquinaria.vb" />
+    <Compile Include="AlbaranVenta\Alquileres\AlbLinVentaAlquiler.vb" />
+    <Compile Include="AlbaranVenta\Alquileres\AlbLinVentaMaquinaria.vb" />
+    <Compile Include="AlbaranVenta\Alquileres\dataPrcActualizarAlbaranAlquiler.vb" />
+    <Compile Include="AlbaranVenta\Alquileres\dataPrcAlbaranVentaMaquinaria.vb" />
+    <Compile Include="AlbaranVenta\Alquileres\GroupUserAlquiler.vb" />
+    <Compile Include="AlbaranVenta\Alquileres\PrcActualizarAlbaranAlquiler.vb" />
+    <Compile Include="AlbaranVenta\Alquileres\PrcActualizarAlbaranAlquilerSinStock.vb" />
+    <Compile Include="AlbaranVenta\Alquileres\PrcAlbaranAlquilerDeposito.vb" />
+    <Compile Include="AlbaranVenta\Alquileres\PrcAlbaranarAlquiler.vb" />
+    <Compile Include="AlbaranVenta\Alquileres\PrcCrearAlbaranVentaAlquiler.vb" />
+    <Compile Include="AlbaranVenta\Alquileres\PrcCrearAlbaranVentaMaquinaria.vb" />
+    <Compile Include="AlbaranVenta\Alquileres\ProcesoAlbaranVentaAlquiler.vb" />
+    <Compile Include="AlbaranVenta\Alquileres\ProcesoAlbaranVentaAlquilerDeposito.vb" />
+    <Compile Include="AlbaranVenta\Alquileres\ResultAlbaranAlquiler.vb" />
+    <Compile Include="AlbaranVenta\DataLineasAVDesdeOrigen.vb" />
+    <Compile Include="AlbaranVenta\DataPrcAlbaranarDeposito.vb" />
+    <Compile Include="AlbaranVenta\Obras\AlbCabVentaObras.vb" />
+    <Compile Include="AlbaranVenta\Obras\AlbLinVentaObras.vb" />
+    <Compile Include="AlbaranVenta\Obras\GroupUserObras.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AlbaranVenta\Obras\PrcCrearAlbaranVentaObras.vb" />
+    <Compile Include="AlbaranVenta\Obras\ProcesoAlbaranVentaObras.vb" />
+    <Compile Include="AlbaranVenta\Pedidos\ProcesoAlbaranVentaPedidos.vb" />
+    <Compile Include="Articulos\ArticuloCodigoBarras.vb" />
+    <Compile Include="Articulos\Caracteristicas\ArticuloNumeroSerie.vb" />
+    <Compile Include="Articulos\Caracteristicas\CaracteristicaArticulo1.vb" />
+    <Compile Include="Articulos\Caracteristicas\CaracteristicaArticulo2.vb" />
+    <Compile Include="Articulos\Caracteristicas\CaracteristicaArticulo3.vb" />
+    <Compile Include="Articulos\Caracteristicas\CaracteristicaArticulo4.vb" />
+    <Compile Include="Articulos\Caracteristicas\CaracteristicaArticulo5.vb" />
+    <Compile Include="Articulos\CodificacionCabecera.vb" />
+    <Compile Include="Articulos\CodificacionDetalle.vb" />
+    <Compile Include="Aseguradora\MotivoNoAsegurado.vb" />
+    <Compile Include="Aseguradora\TipoModificacionRiesgo.vb" />
+    <Compile Include="ChequeTarjeta\Cheque.vb" />
+    <Compile Include="ChequeTarjeta\Tarjeta.vb" />
+    <Compile Include="ClienteDistribuidor.vb" />
+    <Compile Include="CobroFacturaCompra.vb" />
+    <Compile Include="Comercial\CalculoTarifaAlquiler.vb" />
+    <Compile Include="Comercial\dataTarifaAlquiler.vb" />
+    <Compile Include="Comunes\ActualizacionControlObras.vb" />
+    <Compile Include="Comunes\DataBasesDatosMultiempresa.vb" />
+    <Compile Include="Comunes\DataDocRowOrigen.vb" />
+    <Compile Include="Contador2.vb" />
+    <Compile Include="ElementoAmortizable\ElementoPlusvalia.vb" />
+    <Compile Include="FacturacionCompra\Devoluciones\DataPrcFacturacionDevolucion.vb" />
+    <Compile Include="FacturacionCompra\EntregasACuenta\FraCabCompraEntregaCta.vb" />
+    <Compile Include="FacturacionCompra\EntregasACuenta\GroupUserEntregasCtaCompra.vb" />
+    <Compile Include="FacturacionCompra\EntregasACuenta\PrcCrearFacturaCompraEntregaCta.vb" />
+    <Compile Include="FacturacionCompra\EntregasACuenta\PrcGenerarFacturaCompraEntregaCuenta.vb" />
+    <Compile Include="FacturacionCompra\FacturaCompraImpuesto.vb" />
+    <Compile Include="FacturacionCompra\Leasing\DataPrcFacturacionCompraLeasing.vb" />
+    <Compile Include="FacturacionCompra\Leasing\FraCabCompraLeasing.vb" />
+    <Compile Include="FacturacionCompra\Leasing\FraLinCompraLeasing.vb" />
+    <Compile Include="FacturacionCompra\Leasing\GroupUserLeasing.vb" />
+    <Compile Include="FacturacionCompra\Leasing\PrcCrearFraCompraLeasing.vb" />
+    <Compile Include="FacturacionCompra\Leasing\PrcFacturacionCompraLeasing.vb" />
+    <Compile Include="FacturacionCompra\NuevoGasto\DataPrcFacturacionNuevoGasto.vb" />
+    <Compile Include="FacturacionCompra\FraCabCompraAlbaran.vb" />
+    <Compile Include="FacturacionCompra\NuevoGasto\FraCabCompraNuevoGasto.vb" />
+    <Compile Include="FacturacionCompra\CopiaFactura\FraCabCompraCopia.vb" />
+    <Compile Include="FacturacionCompra\NuevoGasto\FraLinCompraNuevoGasto.vb" />
+    <Compile Include="FacturacionCompra\CopiaFactura\PrcCopiaFacturaCompra.vb" />
+    <Compile Include="FacturacionCompra\Devoluciones\PrcFacturacionDevolucion.vb" />
+    <Compile Include="FacturacionCompra\NuevoGasto\PrcFacturacionNuevoGasto.vb" />
+    <Compile Include="FacturacionCompra\Devoluciones\ProcessInfoFraDevolucion.vb" />
+    <Compile Include="FacturacionComunes\FraLinEntregaCta.vb" />
+    <Compile Include="FacturacionVenta\EntregasACuenta\FraCabEntregaCta.vb" />
+    <Compile Include="FacturacionVenta\EntregasACuenta\GroupUserEntregasCtaVenta.vb" />
+    <Compile Include="FacturacionVenta\EntregasACuenta\PrcCrearFacturaVentaEntregaCta.vb" />
+    <Compile Include="FacturacionVenta\EntregasACuenta\PrcGenerarFacturaVentaEntregaCuenta.vb" />
+    <Compile Include="FacturacionVenta\FacturaVentaImpuesto.vb" />
+    <Compile Include="FacturacionVenta\Mantenimiento\DataPrcFacturacionOTs.vb" />
+    <Compile Include="FacturacionVenta\Mantenimiento\FraCabMnto.vb" />
+    <Compile Include="FacturacionVenta\Mantenimiento\FraLinMnto.vb" />
+    <Compile Include="FacturacionVenta\Mantenimiento\GroupUserFVMantenimiento.vb" />
+    <Compile Include="FacturacionVenta\Mantenimiento\PrcCrearFacturaVentaOT.vb" />
+    <Compile Include="FacturacionVenta\Mantenimiento\PrcFacturacionOTs.vb" />
+    <Compile Include="FacturacionVenta\Obras\Alquiler\CalculoSegurosTasas.vb" />
+    <Compile Include="FacturacionVenta\Obras\Hitos\DataPrcFacturacionObras.vb" />
+    <Compile Include="FacturacionVenta\Obras\FraCabObra.vb" />
+    <Compile Include="FacturacionVenta\Obras\FraLinObra.vb" />
+    <Compile Include="FacturacionVenta\Obras\Certificaciones\FraCabObraCertificacion.vb" />
+    <Compile Include="FacturacionVenta\Obras\Certificaciones\GroupUserObraCertificacion.vb" />
+    <Compile Include="FacturacionVenta\Obras\Certificaciones\FraLinObraCertificacion.vb" />
+    <Compile Include="FacturacionVenta\Obras\Hitos\FraCabVencimiento.vb" />
+    <Compile Include="FacturacionVenta\Obras\Hitos\FraLinVencimiento.vb" />
+    <Compile Include="FacturacionVenta\Obras\PrcCrearFacturaVentaObra.vb" />
+    <Compile Include="FacturacionVenta\Obras\PrcFacturacionObras.vb" />
+    <Compile Include="FacturacionVenta\Obras\ProcessInfoFraObras.vb" />
+    <Compile Include="FacturacionVenta\Obras\Promotoras\FraCabObraPromo.vb" />
+    <Compile Include="FacturacionVenta\Obras\Promotoras\FraLinObraPromo.vb" />
+    <Compile Include="FacturacionVenta\Obras\Promotoras\GroupUserObraPromo.vb" />
+    <Compile Include="FacturacionVenta\Obras\Hitos\OrdenFacturasObras.vb" />
+    <Compile Include="FacturacionVenta\Obras\ProcesoFacturacionObras.vb" />
+    <Compile Include="FacturacionVenta\CopiaFactura\FraCabVentaCopia.vb" />
+    <Compile Include="FacturacionVenta\CopiaFactura\PrcCopiaFacturaVenta.vb" />
+    <Compile Include="FormaEnvioDetalle.vb" />
+    <Compile Include="GestionCobrosCabecera.vb" />
+    <Compile Include="GestionCobrosLineas.vb" />
+    <Compile Include="HistoricoPreciosCliente.vb" />
+    <Compile Include="HistoricoPreciosClienteQDesde.vb" />
+    <Compile Include="HistoricoPreciosProveedor.vb" />
+    <Compile Include="HistoricoPreciosProveedorQDesde.vb" />
+    <Compile Include="HistoricoRiesgoCliente.vb" />
+    <Compile Include="HistoricoTipoIVA.vb" />
+    <Compile Include="Impuestos\ArticuloImpuesto.vb" />
+    <Compile Include="Impuestos\Impuesto.vb" />
+    <Compile Include="LiquidacionDetalle.vb" />
+    <Compile Include="MarcaComercial.vb" />
+    <Compile Include="OLAPQuery.vb" />
+    <Compile Include="Comercial\DataCalculoRepresentantes.vb" />
+    <Compile Include="Comercial\DataCalculoTarifaComercial.vb" />
+    <Compile Include="Compra\DataCalculoTarifaCompra.vb" />
+    <Compile Include="Compra\DataDireccionProv.vb" />
+    <Compile Include="Comercial\DataDireccionClte.vb" />
+    <Compile Include="Compra\DataTarifaCompra.vb" />
+    <Compile Include="Comunes\DataEjercicio.vb" />
+    <Compile Include="Comunes\DataObservaciones.vb" />
+    <Compile Include="Comunes\DataTarifa.vb" />
+    <Compile Include="Comercial\DataTarifaComercial.vb" />
+    <Compile Include="DataCambioMoneda.vb" />
+    <Compile Include="AlbaranCompra\GroupUserPedidosCompra.vb" />
+    <Compile Include="AlbaranCompra\PrcAlbaranarPedCompra.vb">
+    </Compile>
+    <Compile Include="AlbaranCompra\PrcCrearAlbaranCompra.vb">
+    </Compile>
+    <Compile Include="AlbaranCompra\ProcesoAlbaranCompra.vb" />
+    <Compile Include="AlbaranCompra\ProcessInfoAlbCompra.vb" />
+    <Compile Include="AlbaranVentaAnalitica.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AlbaranVentaBulto.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AlbaranVentaCabecera.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AlbaranVentaLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AlbaranVentaLote.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AlbaranVentaRepresentante.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AlbaranVenta\AlbCabVenta.vb" />
+    <Compile Include="AlbaranVenta\Pedidos\AlbCabVentaPedido.vb" />
+    <Compile Include="AlbaranVenta\Pedidos\AlbLinVentaPedido.vb" />
+    <Compile Include="AlbaranVenta\DataPrcAlbaranar.vb" />
+    <Compile Include="AlbaranVenta\DocumentoAlbaranVenta.vb" />
+    <Compile Include="AlbaranVenta\Pedidos\GroupUserPedidos.vb" />
+    <Compile Include="AlbaranVenta\Obras\PrcAlbaranarObras.vb">
+    </Compile>
+    <Compile Include="AlbaranVenta\Pedidos\PrcAlbaranarPedidosVenta.vb">
+    </Compile>
+    <Compile Include="AlbaranVenta\Pedidos\PrcCrearAlbaranVentaPedidos.vb">
+    </Compile>
+    <Compile Include="AlbaranVenta\ProcesoAlbaranVenta.vb" />
+    <Compile Include="AlbaranVenta\ProcessInfoAV.vb" />
+    <Compile Include="Almacen.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AlmacenUbicacion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ElementoAmortizable\AmortizacionRegistro.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Articulos\Articulo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Articulos\ArticuloAlmacen.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Articulos\ArticuloAlmacenLote.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Articulos\ArticuloAnalitica.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Articulos\ArticuloCaracteristica.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Articulos\ArticuloCliente.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Articulos\ArticuloClienteLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Articulos\ArticuloCosteEstandar.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Articulos\ArticuloEstado.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Articulos\ArticuloEstructura.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Articulos\ArticuloFoto.vb" />
+    <Compile Include="Articulos\ArticuloIdioma.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Articulos\ArticuloNSerie.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Articulos\ArticuloNserieCaract.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Articulos\ArticuloPlano.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Articulos\ArticuloProveedor.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Articulos\ArticuloProveedorLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Articulos\ArticuloRuta.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Articulos\ArticuloUnidadAB.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Articulos\ArticuloVarios.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Aseguradora\Aseguradora.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AvalProveedor.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AyudaConciliacionBancaria.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Banco.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BancoPropio.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BancoPropioFormFinanc.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BancoPropioIntereses.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BancoPropioRendimiento.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Comunes\Cabecera.vb" />
+    <Compile Include="CalendarioAnual.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Caracteristica.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CaracteristicaAgrupacion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CaracteristicaValor.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Centro.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CentroGestAlmSuminist.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CentroGestion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CentroTasa.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CierreInventario.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CierreInventarioDetalle.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClaseAval.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Cliente.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClienteAnalisisRiesgo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClienteBanco.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClienteDescuentoFamilia.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClienteDireccion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClienteObservacion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientePersonaContacto.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientePromocion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClienteRepresentante.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClienteTarifa.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClienteVacaciones.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Cobro.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CobroDevolucion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CobroPeriodico.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Comercial\ComercialCab.vb" />
+    <Compile Include="ComisionCantidad.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ComisionRepresentante.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Compra\CompraCab.vb" />
+    <Compile Include="Compra\DocumentoCompra.vb" />
+    <Compile Include="Compra\ProcesoCompra.vb" />
+    <Compile Include="Comunes\ProcesoComunes.vb" />
+    <Compile Include="Concepto.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConceptosTesoreria.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CondicionEnvio.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CondicionPago.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CondicionPagoLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CSB43BancoPropioConceptos.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Cuaderno43Directorio.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Cuaderno43Movimiento.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DatosEmpresa.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Departamento.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DiaPago.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Disponibilidad.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Comunes\DocumentCabLin.vb" />
+    <Compile Include="Comercial\DocumentoComercial.vb" />
+    <Compile Include="ElementoAmortizable\ElementoAmortizable.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ElementoAmortizable\ElementoAmortizableFCL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ElementoAmortizable\ElementoAmortizAnalitica.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ElementoAmortizable\ElementoAmortizUbicacion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ElementoAmortizable\ElementoAnalitica.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ElementoAmortizable\ElementoRevalorizacion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ElementoAmortizable\ElementoSubvencion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EntidadContador.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EntregasACuenta.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ElementoAmortizable\EstadoAmortizacion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EstadoAval.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EstadoCobro.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EstadoPago.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Estructura.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EstructuraAlternativo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FacturacionCompra\PrcActualizarFacturaCompra.vb" />
+    <Compile Include="FacturacionCompra\Facturacion\PrcFacturacionCompra.vb">
+    </Compile>
+    <Compile Include="FacturacionCompra\PrcCrearFraCompra.vb">
+    </Compile>
+    <Compile Include="FacturacionCompra\Facturacion\DataPrcFacturacionCompra.vb" />
+    <Compile Include="FacturacionCompra\AutoFaturacion\DataPrcAutofacturacionCompra.vb" />
+    <Compile Include="FacturacionCompra\AutoFaturacion\PrcAutofacturacionCompra.vb">
+    </Compile>
+    <Compile Include="FacturacionCompra\DocumentoFacturaCompra.vb" />
+    <Compile Include="FacturacionCompra\FraCabCompra.vb" />
+    <Compile Include="FacturacionCompra\FraLinCompraAlbaran.vb" />
+    <Compile Include="FacturacionCompra\GroupUserAlbaranCompra.vb" />
+    <Compile Include="FacturacionCompra\OrdenFacturasCompra.vb" />
+    <Compile Include="FacturacionCompra\ProcesoFacturacionCompra.vb" />
+    <Compile Include="FacturacionVenta\DataPrcActualizarFactura.vb" />
+    <Compile Include="FacturacionVenta\Autofacturacion\DataPrcAutofacturacion.vb" />
+    <Compile Include="FacturacionVenta\FacturacionAlbaranes\DataPrcFacturacionGeneral.vb" />
+    <Compile Include="FacturacionComunes\ProvisionalCounter.vb" />
+    <Compile Include="FacturacionComunes\ProcessInfoFra.vb" />
+    <Compile Include="FacturacionComunes\ResultFacturacion.vb" />
+    <Compile Include="FacturacionVenta\FacturacionAlbaranes\GroupUserAlbaranes.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FacturacionComunes\DataAutoFact.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FacturacionVenta\PrcActualizarFactura.vb" />
+    <Compile Include="FacturacionVenta\Autofacturacion\PrcAutofacturacion.vb">
+    </Compile>
+    <Compile Include="FacturacionComunes\DataBaseImponible.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FacturacionVenta\PrcCrearFacturaVenta.vb">
+    </Compile>
+    <Compile Include="FacturacionVenta\DocumentoFacturaVenta.vb" />
+    <Compile Include="FacturacionVenta\FacturacionAlbaranes\PrcFacturacionGeneral.vb">
+    </Compile>
+    <Compile Include="FacturacionVenta\FraCab.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FacturacionVenta\FacturacionAlbaranes\FraCabAlbaran.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FacturacionVenta\FacturacionAlbaranes\FraLinAlbaran.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FacturacionVenta\OrdenFacturas.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FacturacionVenta\ProcesoFacturacionVenta.vb" />
+    <Compile Include="FacturacionVenta\Obras\Hitos\GroupUserObraVencimiento.vb" />
+    <Compile Include="FacturaCompraAnalitica.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FacturaCompraBaseImponible.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FacturaCompraCabecera.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FacturaCompraLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FacturaVentaAnalitica.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FacturaVentaBaseImponible.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FacturaVentaCabecera.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FacturaVentaLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FacturaVentaRepresentante.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Familia.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FamiliaCaracteristica.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FamiliaDescuentos.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FamiliaElemento.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FamiliaFoto.vb" />
+    <Compile Include="FormaEnvio.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FormaPago.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="General.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GeneralAlquiler.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GenerarFicheros.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GRPAlbaranVentaCompraLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GRPPedidoVentaCompraLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ElementoAmortizable\GrupoAmortizacion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HistoricoCosteMaterial.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HistoricoCosteOperacion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HistoricoCosteVarios.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HistoricoEstadoActivo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HistPrograma.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HistProgramaCompra.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Idioma.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Incidencia.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ElementoAmortizable\Inmovilizado.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LineaAvalCabecera.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LineaAvalIntereses.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LineaAvalLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Liquidacion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MantenimientoValoresAyB.vb" />
+    <Compile Include="Marca.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mercado.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Comercial\ProcesoComercial.vb" />
+    <Compile Include="Modelo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ModeloConfirming.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ModeloFactoring.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ModeloTransferencia.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ModoTrasporte.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NegocioGeneral.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Observacion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operacion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OperacionDetalle.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Pago.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PagoPerActualiz.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PagoPeriodico.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PagoPeriodicoImpuesto.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PartidaEstadistica.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PedidoCompraAnalitica.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PedidoCompraCabecera.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PedidoCompraEspecificacion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PedidoCompraLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PedidoCompraPrecio.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PedidoCompra\CopiaPedido\PedCabCompraCopia.vb" />
+    <Compile Include="PedidoCompra\CopiaPedido\PrcCopiaPedidoCompra.vb" />
+    <Compile Include="PedidoCompra\OfertasCompra\DataOfertaCompra.vb" />
+    <Compile Include="PedidoCompra\DataOrigenPC.vb" />
+    <Compile Include="PedidoCompra\Mantenimiento\DataPrcCrearPedidoCompraMantenimiento.vb" />
+    <Compile Include="PedidoCompra\Obras\DataPrcCrearPedidoCompraObras.vb" />
+    <Compile Include="PedidoCompra\OfertasCompra\DataPrcCrearPedidoCompraOfertaCompra.vb" />
+    <Compile Include="PedidoCompra\PedidoVenta\DataPrcCrearPedidoCompraDesdePedidoVenta.vb" />
+    <Compile Include="PedidoVenta\CopiaPedido\PedCabVentaCopia.vb" />
+    <Compile Include="PedidoVenta\CopiaPedido\PrcCopiaPedidoVenta.vb" />
+    <Compile Include="PedidoVenta\EDI\PedCabEDI.vb" />
+    <Compile Include="PedidoVenta\PedidoCompra\DataPrcCrearPedidoVentaEnBDSecundaria.vb" />
+    <Compile Include="PedidoCompra\PedidoVenta\DataResultadoMultiempresaPC.vb" />
+    <Compile Include="PedidoCompra\PedidoVenta\GroupUserPCPedidosVenta.vb" />
+    <Compile Include="PedidoCompra\PedidoVenta\PedCabCompraPedidoVenta.vb" />
+    <Compile Include="PedidoCompra\PedidoVenta\PedLinCompraPedidoVenta.vb" />
+    <Compile Include="PedidoCompra\PedidoVenta\PrcCrearPedidoCompraDesdePedidoVenta.vb" />
+    <Compile Include="PedidoVenta\PedidoCompra\PrcCrearPedidoVentaEnBDSecundaria.vb" />
+    <Compile Include="PedidoCompra\PedidoVenta\PrcPropuestaPedidoCompraDesdePedidoVenta.vb" />
+    <Compile Include="PedidoVenta\PedidoCompra\ProcessInfoPVBBDDSec.vb" />
+    <Compile Include="PedidoCompra\Planificacion\DataPrcCrearPedidoCompraPlanificacion.vb" />
+    <Compile Include="PedidoCompra\ProgramaCompra\DataPrcCrearPedidoCompraPrograma.vb" />
+    <Compile Include="PedidoCompra\SolicitudCompra\DataPrcCrearPedidoCompraSolicitudCompra.vb" />
+    <Compile Include="PedidoCompra\Subcontratacion\DataPrcCrearPedidoCompraSubcontratacion.vb" />
+    <Compile Include="PedidoCompra\ProgramaCompra\DataProgramaCompra.vb" />
+    <Compile Include="PedidoCompra\SolicitudCompra\DataSolicitudCompra.vb" />
+    <Compile Include="PedidoCompra\Subcontratacion\DataSubcontratacion.vb" />
+    <Compile Include="PedidoCompra\DocumentoPedidoCompra.vb" />
+    <Compile Include="PedidoCompra\OfertasComerciales\GroupUserCompraOfertasComerciales.vb" />
+    <Compile Include="PedidoCompra\Mantenimiento\GroupUserMantenimiento.vb" />
+    <Compile Include="PedidoCompra\Obras\GroupUserCompraObras.vb" />
+    <Compile Include="PedidoCompra\OfertasCompra\GroupUserOfertaCompra.vb" />
+    <Compile Include="PedidoCompra\Planificacion\GroupUserPlanificaciones.vb" />
+    <Compile Include="PedidoCompra\ProgramaCompra\GroupUserProgramaCompra.vb" />
+    <Compile Include="PedidoCompra\SolicitudCompra\GroupUserSolicitudes.vb" />
+    <Compile Include="PedidoCompra\Subcontratacion\GroupUserSubcontrataciones.vb" />
+    <Compile Include="PedidoCompra\OrdenPedidoCompra.vb" />
+    <Compile Include="PedidoCompra\PedCabCompra.vb" />
+    <Compile Include="PedidoCompra\Mantenimiento\PedCabCompraMantenimiento.vb" />
+    <Compile Include="PedidoCompra\Obras\PedCabCompraObra.vb" />
+    <Compile Include="PedidoCompra\Planificacion\PedCabCompraPlanif.vb" />
+    <Compile Include="PedidoCompra\OfertasCompra\PedCabCompraOfertaCompra.vb" />
+    <Compile Include="PedidoCompra\ProgramaCompra\PedCabCompraProgramaCompra.vb" />
+    <Compile Include="PedidoCompra\SolicitudCompra\PedCabCompraSolicitudCompra.vb" />
+    <Compile Include="PedidoCompra\Subcontratacion\PedCabCompraSubcontratacion.vb" />
+    <Compile Include="PedidoCompra\OfertasComerciales\PedCabCompraOfertaComercial.vb" />
+    <Compile Include="PedidoCompra\PedLinCompra.vb" />
+    <Compile Include="PedidoCompra\Mantenimiento\PedLinCompraMantenimiento.vb" />
+    <Compile Include="PedidoCompra\Obras\PedLinCompraObraMaterial.vb" />
+    <Compile Include="PedidoCompra\Obras\PedLinCompraObraTrabajo.vb" />
+    <Compile Include="PedidoCompra\OfertasComerciales\PedLinCompraOfertaComercial.vb" />
+    <Compile Include="PedidoCompra\OfertasCompra\PedLinCompraOfertaCompra.vb" />
+    <Compile Include="PedidoCompra\Planificacion\PedLinCompraPlanificacion.vb" />
+    <Compile Include="PedidoCompra\ProgramaCompra\PedLinCompraProgramaCompra.vb" />
+    <Compile Include="PedidoCompra\SolicitudCompra\PedLinCompraSolicitudCompra.vb" />
+    <Compile Include="PedidoCompra\Subcontratacion\PedLinCompraSubcontratacion.vb" />
+    <Compile Include="PedidoCompra\PrcCrearPedidoCompra.vb" />
+    <Compile Include="PedidoCompra\Mantenimiento\PrcCrearPedidoCompraMantenimiento.vb" />
+    <Compile Include="PedidoCompra\Obras\PrcCrearPedidoCompraObras.vb" />
+    <Compile Include="PedidoCompra\OfertasCompra\PrcCrearPedidoCompraOfertaCompra.vb" />
+    <Compile Include="PedidoCompra\OfertasComerciales\PrcCrearPedidoCompraOfertaComercial.vb" />
+    <Compile Include="PedidoCompra\Planificacion\PrcCrearPedidoCompraPlanificacion.vb" />
+    <Compile Include="PedidoCompra\ProgramaCompra\PrcCrearPedidoCompraPrograma.vb" />
+    <Compile Include="PedidoCompra\SolicitudCompra\PrcCrearPedidoCompraSolicitudCompra.vb" />
+    <Compile Include="PedidoCompra\Subcontratacion\PrcCrearPedidoCompraSubcontratacion.vb" />
+    <Compile Include="PedidoCompra\ProcesoPedidoCompra.vb" />
+    <Compile Include="PedidoCompra\ProcessInfoPC.vb" />
+    <Compile Include="PedidoCompra\Planificacion\ProcessInfoPlanif.vb" />
+    <Compile Include="PedidoCompra\Subcontratacion\ProcessInfoSubcontratacion.vb" />
+    <Compile Include="PedidoVentaAnalitica.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PedidoVentaCabecera.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PedidoVentaLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PedidoVentaRepresentante.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PedidoVenta\OfertasComerciales\DataOfertaComercial.vb" />
+    <Compile Include="Comunes\DataPrcCrearPedidoOfertaComercial.vb" />
+    <Compile Include="PedidoVenta\PedidoCompra\GroupUserPVPedidosCompra.vb" />
+    <Compile Include="PedidoVenta\PedidoCompra\PedCabVentaPedidoCompra.vb" />
+    <Compile Include="PedidoVenta\ProgramaVenta\DataPrcCrearPedidoVentaPrograma.vb" />
+    <Compile Include="PedidoVenta\ProgramaVenta\DataPrograma.vb" />
+    <Compile Include="PedidoVenta\DocumentoPedidoVenta.vb" />
+    <Compile Include="PedidoVenta\OfertasComerciales\GroupUserOfertasComerciales.vb" />
+    <Compile Include="PedidoVenta\ProgramaVenta\GroupUserProgramas.vb" />
+    <Compile Include="PedidoVenta\OfertasComerciales\PedCabOfertaComercial.vb" />
+    <Compile Include="PedidoVenta\OfertasComerciales\PrcCrearPedidoVentaOfertaComercial.vb" />
+    <Compile Include="PedidoVenta\ProcesoPedidoVenta.vb" />
+    <Compile Include="PedidoVenta\ProgramaVenta\OrdenPrograma.vb" />
+    <Compile Include="PedidoVenta\PedCab.vb" />
+    <Compile Include="PedidoVenta\ProgramaVenta\PedCabPrograma.vb" />
+    <Compile Include="PedidoVenta\ProgramaVenta\PedLinPrograma.vb" />
+    <Compile Include="PedidoVenta\ProgramaVenta\PrcCrearPedidoVentaPrograma.vb" />
+    <Compile Include="PedidoVenta\PrcCrearPedidoVenta.vb" />
+    <Compile Include="PedidoVenta\ProcessInfoPV.vb" />
+    <Compile Include="PersonaContacto.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Pistolas\DataPistolas.vb" />
+    <Compile Include="Pistolas\Pistolas.vb" />
+    <Compile Include="Plantilla.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PolizaCredito.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PresupuestoCosteEstandar.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PresupuestoCosteMaterial.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PresupuestoCosteOperacion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PresupuestoCosteVarios.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PrevisionCabecera.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PrevisionLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PrevisionTecoCabecera.vb" />
+    <Compile Include="PrevisionTecoLinea.vb" />
+    <Compile Include="ProgramaCabecera.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProgramaCompraCabecera.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProgramaCompraLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="programaCompraPrecio.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProgramaLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PromocionCabecera.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PromocionLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PromocionRegalo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Proveedor.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProveedorBanco.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProveedorDescuentoFamilia.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProveedorDireccion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProveedorObservacion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProveedorPersonaContacto.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProveedorTarifa.vb" />
+    <Compile Include="ProveedorVacaciones.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PuntoVerde\EcoComerIndus.vb" />
+    <Compile Include="PuntoVerde\EcoTipoEnvase.vb" />
+    <Compile Include="PuntoVerde\EcoTipoMaterial.vb" />
+    <Compile Include="PuntoVerde\EcoTipoProducto.vb" />
+    <Compile Include="PuntoVerde\EcoTipoSubMaterial.vb" />
+    <Compile Include="Regalo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Remesa.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RemesaCobroFacturaCompra.vb" />
+    <Compile Include="RemesaPago.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RepartoCGCabecera.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RepartoCGLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Representante.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Ruta.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RutaAlternativo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RutaParametro.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RutaUtillaje.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RutaUtillajeAlternativo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Seccion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SimulacionTesoreria.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Stocks\ProcesoStocks.vb" />
+    <Compile Include="Stocks\TipoMovimientoAnalitica.vb" />
+    <Compile Include="Subfamilia.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tarifa.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TarifaArticulo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TarifaArticuloLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TarifaEstado.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TarifaOrden.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tasa.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TipoAlbaran.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ElementoAmortizable\TipoAmortizacionCabecera.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ElementoAmortizable\TipoAmortizacionLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TipoApunte.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TipoArticulo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TipoArticuloFoto.vb" />
+    <Compile Include="TipoClasif.vb" />
+    <Compile Include="TipoCliente.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TipoCobro.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TipoElemento.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TipoEstructura.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TipoEstructuraLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TipoEtiqueta.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TipoFactura.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TipoIva.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TipoLinea.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TipoMovimiento.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TipoPago.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TipoProveedor.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TiposDatosGeneral\DataParamFacturaCompra.vb" />
+    <Compile Include="TiposDatosGeneral\DataParamFacturaVenta.vb" />
+    <Compile Include="TiposDatosGeneral\DataParamRiesgoCliente.vb" />
+    <Compile Include="UdMedida.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UdTiempo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnidadAB.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UsuarioCentroGestion.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Varios.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Vendedor.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Zona.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ZonaRepresentante.vb">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="My Project\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

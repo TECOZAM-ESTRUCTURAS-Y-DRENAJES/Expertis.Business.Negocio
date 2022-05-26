@@ -1,0 +1,6 @@
+C:\Users\lgonzalez\Desktop\EXPERTIS\Bin\Expertis.Business.Negocio.dll.config
+C:\Users\lgonzalez\Desktop\EXPERTIS\Bin\Expertis.Business.Negocio.dll
+C:\Users\lgonzalez\Desktop\EXPERTIS\Bin\Expertis.Business.Negocio.pdb
+C:\Users\lgonzalez\Desktop\EXPERTIS\DESARROLLO EXPERTIS\FR2Sergio\BusinessSergio\Expertis.Business.Negocio\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\lgonzalez\Desktop\EXPERTIS\DESARROLLO EXPERTIS\FR2Sergio\BusinessSergio\Expertis.Business.Negocio\obj\Debug\Expertis.Business.Negocio.dll
+C:\Users\lgonzalez\Desktop\EXPERTIS\DESARROLLO EXPERTIS\FR2Sergio\BusinessSergio\Expertis.Business.Negocio\obj\Debug\Expertis.Business.Negocio.pdb
