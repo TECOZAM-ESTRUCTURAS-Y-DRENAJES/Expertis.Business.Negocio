@@ -1427,6 +1427,70 @@ Public Class ProcesoStocks
                 End If
                 '//Fin movimientos de entrada
                 Return updateEntrada
+            Else
+                'David Velasco Herrero 15/06/22 Para crear movimiento de ferreteria
+                '//Movimientos de entrada
+                Dim stkEntrada As StockData
+                Dim Articulos As EntityInfoCache(Of ArticuloInfo) = services.GetService(Of EntityInfoCache(Of ArticuloInfo))()
+                Dim ArtInfo As ArticuloInfo = Articulos.GetEntity(data.Salida.Articulo)
+
+                If Not ArtInfo Is Nothing AndAlso Length(ArtInfo.IDArticulo) > 0 Then
+                    If ArtInfo.RecalcularValoracion = enumtaValoracionSalidas.taMantenerPrecio Then
+                        ' El precio de la entrada en este caso será según criterio de valoración del artículo en el almacén de donde sale.
+                        Dim PrecioEntradaA As Double
+                        Dim PrecioEntradaB As Double
+                        Dim Monedas As MonedaCache = services.GetService(Of MonedaCache)()
+                        Dim MonInfoB As MonedaInfo = Monedas.MonedaB
+                        Select Case ArtInfo.CriterioValoracion
+                            Case enumtaValoracion.taPrecioEstandar
+                                PrecioEntradaA = data.UpdateSalida.Movimientos.Rows(0)("PrecioEstandar")
+                                PrecioEntradaB = xRound(data.UpdateSalida.Movimientos.Rows(0)("PrecioEstandar") * Monedas.MonedaB.CambioB, MonInfoB.NDecimalesPrecio)
+                            Case enumtaValoracion.taPrecioFIFOFecha
+                                PrecioEntradaA = data.UpdateSalida.Movimientos.Rows(0)("FifoFD")
+                                PrecioEntradaB = xRound(data.UpdateSalida.Movimientos.Rows(0)("FifoFD") * Monedas.MonedaB.CambioB, MonInfoB.NDecimalesPrecio)
+                            Case enumtaValoracion.taPrecioFIFOMvto
+                                PrecioEntradaA = data.UpdateSalida.Movimientos.Rows(0)("FifoF")
+                                PrecioEntradaB = xRound(data.UpdateSalida.Movimientos.Rows(0)("FifoF") * Monedas.MonedaB.CambioB, MonInfoB.NDecimalesPrecio)
+                            Case enumtaValoracion.taPrecioMedio
+                                PrecioEntradaA = data.UpdateSalida.Movimientos.Rows(0)("PrecioMedio")
+                                PrecioEntradaB = xRound(data.UpdateSalida.Movimientos.Rows(0)("PrecioMedio") * Monedas.MonedaB.CambioB, MonInfoB.NDecimalesPrecio)
+                            Case enumtaValoracion.taPrecioUltCompra
+                                PrecioEntradaA = data.UpdateSalida.Movimientos.Rows(0)("PrecioUltimaCompra")
+                                PrecioEntradaB = xRound(data.UpdateSalida.Movimientos.Rows(0)("PrecioUltimaCompra") * Monedas.MonedaB.CambioB, MonInfoB.NDecimalesPrecio)
+                        End Select
+
+                        stkEntrada = New StockData(data.Salida.Articulo, Alm.IDAlmacenDeposito, data.Salida.Cantidad, PrecioEntradaA, PrecioEntradaB, _
+                                                        data.Salida.FechaDocumento, enumTipoMovimiento.tmEntTransferencia, data.Salida.Documento, data.Salida.IDDocumento)
+                    Else
+                        stkEntrada = New StockData(data.Salida.Articulo, Alm.IDAlmacenDeposito, data.Salida.Cantidad, data.UpdateSalida.Movimientos.Rows(0)("precioA"), data.UpdateSalida.Movimientos.Rows(0)("precioB"), _
+                                    data.Salida.FechaDocumento, enumTipoMovimiento.tmEntTransferencia, data.Salida.Documento, data.Salida.IDDocumento)
+                    End If
+                End If
+                stkEntrada.Texto = data.Salida.Texto
+                stkEntrada.Lote = data.Salida.Lote
+                stkEntrada.Ubicacion = Alm.IDUbicacionDeposito
+                stkEntrada.NSerie = data.Salida.NSerie
+                stkEntrada.EstadoNSerie = data.Salida.EstadoNSerie
+                stkEntrada.EstadoNSerieAnterior = data.Salida.EstadoNSerieAnterior
+                stkEntrada.Operario = data.Salida.Operario
+                stkEntrada.Obra = data.Salida.Obra
+
+                Dim datMovto As New StEntradaTransfer(data.NumeroMovimiento, stkEntrada, data.Salida, data.UpdateSalida)
+                Dim updateEntrada As StockUpdateData = ProcessServer.ExecuteTask(Of StEntradaTransfer, StockUpdateData)(AddressOf EntradaTransferencia, datMovto, services)
+                If updateEntrada.Estado = EstadoStock.Actualizado Then
+                    If Not data.lineaLote Is Nothing Then
+                        data.lineaLote("IDMovimientoEntrada") = updateEntrada.IDLineaMovimiento
+                    Else
+                        data.lineaAlbaran("IDMovimientoEntrada") = updateEntrada.IDLineaMovimiento
+                    End If
+                    '//Mantenimiento correctivo-preventivo
+                    If Len(stkEntrada.EstadoNSerie) > 0 Then
+                        Dim addMnto As New ProcesoAlbaranVenta.DataAddMntoOT(data.Salida.EstadoNSerie, data.IDCliente, data.lineaAlbaran)
+                        ProcessServer.ExecuteTask(Of ProcesoAlbaranVenta.DataAddMntoOT)(AddressOf ProcesoAlbaranVenta.AddMntoOT, addMnto, services)
+                    End If
+                End If
+                '//Fin movimientos de entrada
+                Return updateEntrada
             End If
         End If
     End Function
