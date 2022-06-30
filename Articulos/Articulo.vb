@@ -4003,6 +4003,25 @@ Public Class DatosArticuloEstado
         End Try
         'MsgBox("Modificación realizada con exito en la tabla de ArticuloNSerie")
     End Sub
+    Public Sub actualizaPrecioYReposicion(ByVal IDArticulo As String, ByVal ValorA As String, ByVal PrecioA As String)
+
+        'Dim strSQL As String
+        'strSQL = " UPDATE tbMaestroArticulo"
+        'strSQL &= " SET ValorReposicionA = ('" & ValorA & "'),ValorReposicionB = ('" & ValorA & "'),FechaEstandar = ('" & Today & "'),FechaValorReposicion = ('" & Today & "'), PrecioEstandarA = ('" & PrecioA & "'),PrecioEstandarB = ('" & PrecioA & "')"
+        'strSQL &= " WHERE IDArticulo = ('" & IDArticulo & "')"
+
+        Dim strSQL As String
+        strSQL = " UPDATE tbMaestroArticulo "
+        strSQL &= "SET ValorReposicionA ='" & ValorA & "',ValorReposicionB ='" & ValorA & "',FechaEstandar ='" & Today & "',FechaValorReposicion ='" & Today & "', PrecioEstandarA ='" & PrecioA & "', PrecioEstandarB ='" & PrecioA & "'"
+        strSQL &= " WHERE IDArticulo='" & IDArticulo & "'"
+
+        Try
+            AdminData.Execute(strSQL)
+        Catch ex As Exception
+            ApplicationService.GenerateError(ex.ToString & ": ERROR")
+        End Try
+        'MsgBox("Modificación realizada con exito en la tabla de ArticuloNSerie")
+    End Sub
 
     'Informa del tipo del articulo pasado para ver si es del 30
     Public Function DevuelveTipo(ByVal IDArticulo As String)
