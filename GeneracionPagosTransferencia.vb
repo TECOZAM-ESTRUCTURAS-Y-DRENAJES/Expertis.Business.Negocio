@@ -1,7 +1,10 @@
 ﻿Imports Solmicro.Expertis.Engine.UI
 Imports Solmicro.Expertis.Engine.BE.BusinessHelper
 Imports Solmicro.Expertis.Business.SEPA
+Imports Solmicro.Expertis.Application.ERP.SEPA
 Imports Solmicro.Expertis.Application.ERP.CommonClasses
+Imports Solmicro.Expertis.Business.General
+
 
 Public Class GeneracionPagosTransferencia
 
@@ -78,7 +81,8 @@ Public Class GeneracionPagosTransferencia
                 Dim ClsFichCSB As New Fichero_PAIN_001_001_03
                 lstRegsFich = ClsFichCSB.GenerarFichero(datFich, New ServiceProvider())
                 If Not lstRegsFich Is Nothing AndAlso lstRegsFich.Length > 0 AndAlso Expertis.Application.ERP.SEPA.General.GuardarFicheroXML(lstRegsFich, strRuta, -1, datFich.FechaCargo, True) Then
-                    ExpertisApp.GenerateMessage("Fichero generado.", Windows.Forms.MessageBoxButtons.OK, Windows.Forms.MessageBoxIcon.Information)
+                    'ExpertisApp.GenerateMessage("Fichero generado.", Windows.Forms.MessageBoxButtons.OK, Windows.Forms.MessageBoxIcon.Information)
+                    MessageBox.Show("Fichero Generado")
                     DesmarcarRegistro(mIDProcess, FilterType.Numeric)
                     Exit Function
                 End If
@@ -136,10 +140,10 @@ Public Class GeneracionPagosTransferencia
                 FileClose(intFile)
                 Return True
             Else
-                ExpertisApp.GenerateMessage("La ruta | no existe. Debe crear la ruta para generar el fichero.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, StrRuta)
+                'ExpertisApp.GenerateMessage("La ruta | no existe. Debe crear la ruta para generar el fichero.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, StrRuta)
             End If
         Else
-            ExpertisApp.GenerateMessage("La ruta | no existe. Debe crear la ruta para generar el fichero.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, StrRuta)
+            'ExpertisApp.GenerateMessage("La ruta | no existe. Debe crear la ruta para generar el fichero.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, StrRuta)
         End If
 
         'ExpertisApp.GenerateMessage("Ya estaría", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)

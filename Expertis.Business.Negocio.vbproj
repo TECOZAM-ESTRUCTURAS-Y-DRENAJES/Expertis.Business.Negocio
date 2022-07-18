@@ -101,6 +101,14 @@
     </WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Expertis.Application.ERP.CommonClasses, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Expertis.Application.ERP.SEPA, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Expertis.Business.BusinessEnum">
       <Name>Expertis.Business.BusinessEnum</Name>
       <HintPath>..\..\..\ExpertisNet\Bin\Expertis.Business.BusinessEnum.dll</HintPath>
@@ -113,6 +121,10 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Expertis.Business.Obra, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Expertis.Business.SEPA, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Expertis.Engine.BE.BusinessEngine, Version=5.0.0.0, Culture=neutral, PublicKeyToken=f4e70a047dadc395, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
@@ -125,6 +137,11 @@
     <Reference Include="Expertis.Engine.Global, Version=5.0.0.0, Culture=neutral, PublicKeyToken=f4e70a047dadc395, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="Expertis.Engine.UI.CommonClasses, Version=5.5.0.0, Culture=neutral, PublicKeyToken=f4e70a047dadc395, processorArchitecture=MSIL" />
+    <Reference Include="Expertis.Engine.UI.Design, Version=5.5.0.0, Culture=neutral, PublicKeyToken=f4e70a047dadc395, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\ExpertisNet50R2test\Bin\Expertis.Engine.UI.Design.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic.Compatibility">
       <Name>Microsoft.VisualBasic.Compatibility</Name>
@@ -325,6 +342,9 @@
     <Compile Include="FacturacionVenta\CopiaFactura\FraCabVentaCopia.vb" />
     <Compile Include="FacturacionVenta\CopiaFactura\PrcCopiaFacturaVenta.vb" />
     <Compile Include="FormaEnvioDetalle.vb" />
+    <Compile Include="GeneracionPagosTransferencia.vb">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="GestionCobrosCabecera.vb" />
     <Compile Include="GestionCobrosLineas.vb" />
     <Compile Include="HistoricoPreciosCliente.vb" />

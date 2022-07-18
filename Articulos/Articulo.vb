@@ -4050,4 +4050,30 @@ Public Class DatosArticuloEstado
         Return AdminData.GetAutoNumeric
     End Function
 
+    Public Sub actualizaFamiliaEntero(ByVal idArticulo As String)
+
+
+        Dim strSQL As String
+        strSQL = " UPDATE tbMaestroArticulo "
+        strSQL &= "SET IDFamilia ='" & 3032 & "'"
+        strSQL &= " WHERE IDArticulo='" & idArticulo & "'"
+
+        Try
+            AdminData.Execute(strSQL)
+        Catch ex As Exception
+            ApplicationService.GenerateError(ex.ToString & ": ERROR")
+        End Try
+
+        Dim strSQL2 As String
+        strSQL2 = " UPDATE tbMaestroArticuloE4 "
+        strSQL2 &= "SET IDFamilia ='" & 3032 & "'"
+        strSQL2 &= " WHERE IDArticulo='" & idArticulo & "'"
+
+        Try
+            AdminData.Execute(strSQL2)
+        Catch ex As Exception
+            ApplicationService.GenerateError(ex.ToString & ": ERROR")
+        End Try
+
+    End Sub
 End Class
