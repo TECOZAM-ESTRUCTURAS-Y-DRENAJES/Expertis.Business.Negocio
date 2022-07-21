@@ -88,7 +88,7 @@ Public Class GestionCobrosLineas
                         dt.Rows(shFila)("impcobros") = 0
 
                         'IBIS. David. 18/10/2010. Cambiado el For de 5 a 8, porqué añadimos 2 nuevas filas.
-                        For shPagos As Short = 1 To 4
+                        For shPagos As Short = 1 To 8
                             dt.Rows(shFila)("imppagos" & shPagos.ToString) = 0
                         Next
 
@@ -145,7 +145,7 @@ Public Class GestionCobrosLineas
                         dt.Rows(shFila)("Tipo") = "Cobro"
 
 
-                        For shPagos As Short = 1 To 4
+                        For shPagos As Short = 1 To 8
                             dt.Rows(shFila)("imppagos" & shPagos.ToString) = 0
                         Next
 

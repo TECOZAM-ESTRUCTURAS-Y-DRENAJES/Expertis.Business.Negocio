@@ -70,7 +70,7 @@ Public Class GestionCobrosCabecera
                 dt.Rows(0)("idejercicio") = iEjer
                 dt.Rows(0)("comentario") = "CONTROL DE PAGOS " & iEjer & "."
                 ' Grabar cabecera
-                'AdminData.SetData(dt)
+                AdminData.SetData(dt)
                 dt.AcceptChanges()
                 ' Crear los detalles
                 Dim dtDetalles As New DataTable
@@ -151,7 +151,7 @@ Public Class GestionCobrosCabecera
             If Not IsNothing(dtDetalles) Then
 
                 '' Obtener los pagos
-                For shEmp As Short = 1 To 5
+                For shEmp As Short = 1 To 8
                     'IBIS. David. 18/10/2010. Cambiamos en el for de 5 a 8, y quitamos el 6 por ser la col. salario
                     If shEmp <> 6 Then
                         ObtenerPagos(dtDetalles, shEmp, shEjercicio)
@@ -218,7 +218,7 @@ Public Class GestionCobrosCabecera
             If Not IsNothing(dtDetalles) Then
 
                 '' Obtener los pagos
-                For shEmp As Short = 1 To 5
+                For shEmp As Short = 1 To 8
                     'IBIS. David. 18/10/2010. Cambiamos en el for de 5 a 8, y quitamos el 6 por ser la col. salario
                     If shEmp <> 6 Then
                         ObtenerPagos(dtDetalles, shEmp, shEjercicio)
