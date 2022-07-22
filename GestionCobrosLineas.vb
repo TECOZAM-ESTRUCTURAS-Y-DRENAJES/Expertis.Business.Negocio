@@ -36,7 +36,7 @@ Public Class GestionCobrosLineas
 
                 End If
             Next
-            AdminData.SetData(dttSource)
+           AdminData.SetData(dttSource)
         End If
         Return dttSource
     End Function

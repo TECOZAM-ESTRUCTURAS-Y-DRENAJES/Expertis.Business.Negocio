@@ -172,6 +172,8 @@ Public Class GestionCobrosCabecera
             dtDetalles.Dispose()
             dtDetalles = Nothing
         Catch ex As Exception
+            MsgBox(ex.StackTrace)
+            MsgBox(ex.HelpLink)
             MsgBox(ex.Message, MsgBoxStyle.Exclamation, "Error al actualizar lineas.")
         End Try
         '' Bien
