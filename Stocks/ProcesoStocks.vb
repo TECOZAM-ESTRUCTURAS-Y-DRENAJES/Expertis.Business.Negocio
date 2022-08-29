@@ -970,12 +970,14 @@ Public Class ProcesoStocks
                         ProcessServer.ExecuteTask(Of DataActualizarLineas)(AddressOf ActualizarLineasAC, act, services)
                     Case Circuito.Ventas
                         'ProcessServer.ExecuteTask(Of DataActualizarLineas)(AddressOf MovimientoCorreccion, act, services)
+
                         If updateData.Estado = EstadoStock.NoActualizado AndAlso Length(data.LineaAlbaran("IDMovimiento")) > 0 Then
                             Dim actMovto As New DataActualizarMovimiento(enumTipoActualizacion.Eliminar, data.LineaAlbaran("IDMovimiento"))
                             ProcessServer.ExecuteTask(Of DataActualizarMovimiento)(AddressOf ActualizarMovimiento, actMovto, services)
                         End If
                         Dim act As New DataActualizarLineas(updateData, data.LineaAlbaran)
                         ProcessServer.ExecuteTask(Of DataActualizarLineas)(AddressOf ActualizarLineasAV, act, services)
+
                         If updateData.Estado = EstadoStock.Actualizado Then
                             Dim desda As New DataEntradaStockEnDepositoOAlquiler
                             desda.IDCliente = data.IDCliente
@@ -994,6 +996,220 @@ Public Class ProcesoStocks
                                 End If
                             End If
                         End If
+                End Select
+            End If
+            If Not updateData Is Nothing Then
+                ReDim Preserve aStkUD(aStkUD.Length)
+                aStkUD(aStkUD.Length - 1) = updateData
+            End If
+        Else
+
+            '//DeshacerActualizados. Si tenemos varios lotes, se actualizan todos menos el último, por jemplo, los que se han actualizado se quedan como tal y el último 
+            '//se queda sin actualizar. Para evitar esto, utilizamos ésta varible.
+            Dim DeshacerActualizados As Boolean = False
+            ProcessServer.ExecuteTask(Of Object)(AddressOf Comunes.BeginTransaction, Nothing, services)
+
+            '//Linea de Albarán con lotes
+            Dim SegundaUnidad As Boolean = ProcessServer.ExecuteTask(Of String, Boolean)(AddressOf ProcesoComunes.AplicarSegundaUnidad, data.LineaAlbaran("IDArticulo"), services)
+            For Each lineaLote As DataRow In data.LotesLineaAlbaran.Rows
+                If lineaLote.Table.Columns.Contains("SeriePrecinta") AndAlso Length(lineaLote("SeriePrecinta")) > 0 Then
+                    csd.LineaAlbaranLote = New DataLote(lineaLote("Lote"), lineaLote("Ubicacion"), lineaLote("QInterna"), lineaLote("SeriePrecinta"), lineaLote("NDesdePrecinta"), lineaLote("NHastaPrecinta")) 'lote
+                Else
+                    csd.LineaAlbaranLote = New DataLote(lineaLote("Lote"), lineaLote("Ubicacion"), lineaLote("QInterna")) 'lote
+                End If
+                If SegundaUnidad Then csd.LineaAlbaranLote.Cantidad2 = CDbl(Nz(lineaLote("QInterna2"), 0))
+
+                stkData = ProcessServer.ExecuteTask(Of DataCrearStockDataAlbaran, StockData)(AddressOf CrearStockDataAlbaran, csd, services)
+                Dim EstTipoMovto As New DataEstablecerTipoMovimiento(stkData, csd.LineaAlbaran, data.LineasAlbaran)
+                Select Case data.Circuito
+                    Case Circuito.Compras
+                        stkData = ProcessServer.ExecuteTask(Of DataEstablecerTipoMovimiento, StockData)(AddressOf EstablecerTipoMovimientoAC, EstTipoMovto, services)
+                    Case Circuito.Ventas
+                        stkData = ProcessServer.ExecuteTask(Of DataEstablecerTipoMovimiento, StockData)(AddressOf EstablecerTipoMovimientoAV, EstTipoMovto, services)
+                End Select
+                Dim dcm As New DataCrearMovimiento(data.NumeroMovimiento, stkData)
+                Dim updateData As StockUpdateData = ProcessServer.ExecuteTask(Of DataCrearMovimiento, StockUpdateData)(AddressOf CrearMovimiento, dcm, services)
+                If Not updateData Is Nothing Then
+                    Select Case data.Circuito
+                        Case Circuito.Compras
+                            If updateData.Estado <> EstadoStock.NoActualizado Then
+                                If updateData.Estado = EstadoStock.Actualizado AndAlso data.NumeroMovimiento <> updateData.NumeroMovimiento Then data.NumeroMovimiento = updateData.NumeroMovimiento
+                                ProcessServer.ExecuteTask(Of DataRow)(AddressOf PrepararActivoUltimaCompra, data.LineaAlbaran, services)
+                            Else
+                                If Length(lineaLote("IDMovimientoEntrada")) > 0 Then
+                                    Dim actMovto As New DataActualizarMovimiento(enumTipoActualizacion.Eliminar, lineaLote("IDMovimientoEntrada"))
+                                    ProcessServer.ExecuteTask(Of DataActualizarMovimiento)(AddressOf ActualizarMovimiento, actMovto, services)
+                                End If
+                            End If
+                            Dim act As New DataActualizarLineas(updateData, data.LineaAlbaran, lineaLote)
+                            ProcessServer.ExecuteTask(Of DataActualizarLineas)(AddressOf ActualizarLineasAC, act, services)
+                        Case Circuito.Ventas
+                            If updateData.Estado = EstadoStock.NoActualizado AndAlso Length(lineaLote("IDMovimientoSalida")) > 0 Then
+                                Dim actMovto As New DataActualizarMovimiento(enumTipoActualizacion.Eliminar, lineaLote("IDMovimientoSalida"))
+                                ProcessServer.ExecuteTask(Of DataActualizarMovimiento)(AddressOf ActualizarMovimiento, actMovto, services)
+                            End If
+                            Dim act As New DataActualizarLineas(updateData, data.LineaAlbaran, lineaLote)
+                            ProcessServer.ExecuteTask(Of DataActualizarLineas)(AddressOf ActualizarLineasAV, act, services)
+                            If updateData.Estado = EstadoStock.Actualizado Then
+                                Dim desda As New DataEntradaStockEnDepositoOAlquiler
+                                desda.IDCliente = data.IDCliente
+                                desda.lineaAlbaran = data.LineaAlbaran
+                                desda.NumeroMovimiento = updateData.NumeroMovimiento
+                                desda.Salida = stkData
+                                desda.UpdateSalida = updateData
+                                desda.lineaLote = lineaLote
+                                If valorTipoAlbaran = enumTipoAlbaran.Intercambio Then
+                                    ProcessServer.ExecuteTask(Of DataActualizarStockAlbaranTx)(AddressOf ActualizarLineaPedidoDeIntercambio, data, services)
+                                    ProcessServer.ExecuteTask(Of DataEntradaStockEnDepositoOAlquiler)(AddressOf EntradaStockDeIntercambio, desda, services)
+                                Else
+                                    Dim updateEntrada As StockUpdateData = ProcessServer.ExecuteTask(Of DataEntradaStockEnDepositoOAlquiler, StockUpdateData)(AddressOf EntradaStockEnDepositoOAlquiler, desda, services)
+                                    If Not updateEntrada Is Nothing Then
+                                        ReDim Preserve aStkUD(aStkUD.Length)
+                                        aStkUD(aStkUD.Length - 1) = updateEntrada
+                                    End If
+                                End If
+                            End If
+                    End Select
+                    If updateData.Estado = EstadoStock.NoActualizado Then
+                        DeshacerActualizados = True
+                    End If
+                    ReDim Preserve aStkUD(aStkUD.Length)
+                    aStkUD(aStkUD.Length - 1) = updateData
+                End If
+            Next
+            If DeshacerActualizados Then
+
+                For i As Integer = 0 To aStkUD.Length - 1
+                    If aStkUD(i).Estado = EstadoStock.Actualizado Then
+                        aStkUD(i).Estado = EstadoStock.NoActualizado
+                        Dim datMsg As New DataMessage(48)
+                        aStkUD(i).Detalle = ProcessServer.ExecuteTask(Of DataMessage, String)(AddressOf Message, datMsg, services)
+                    End If
+                Next
+
+                Select Case data.Circuito
+                    Case Circuito.Compras
+                        For Each lineaLote As DataRow In data.LotesLineaAlbaran.Rows
+                            lineaLote("IDMovimientoEntrada") = System.DBNull.Value
+                        Next
+                    Case Circuito.Ventas
+                        For Each lineaLote As DataRow In data.LotesLineaAlbaran.Rows
+                            lineaLote("IDMovimientoSalida") = System.DBNull.Value
+                        Next
+
+                End Select
+                data.LineaAlbaran("EstadoStock") = enumavlEstadoStock.avlNoActualizado
+
+                ProcessServer.ExecuteTask(Of Boolean)(AddressOf Comunes.RollbackTransaction, True, services)
+            Else
+                ProcessServer.ExecuteTask(Of Boolean)(AddressOf Comunes.CommitTransaction, True, services)
+            End If
+        End If
+        Return aStkUD
+    End Function
+    'David Velasco 10/8/22
+    <Task()> Public Shared Function ActualizarStockAlbaranTx2(ByVal data As DataActualizarStockAlbaranTx, ByVal services As ServiceProvider) As StockUpdateData()
+        If data.Circuito Is Nothing Then Exit Function
+        Dim aStkUD(-1) As StockUpdateData
+        Dim valorTipoAlbaran As BusinessEnum.enumTipoAlbaran
+        If data.Circuito = Circuito.Ventas Then
+            Dim dva As New DataValidarAlmacenes
+            dva.IDTipoAlbaran = data.IDTipoAlbaran
+            dva.IDAlmacenDeposito = data.IDAlmacenDeposito
+            dva.LineaAlbaran = data.LineaAlbaran
+
+            valorTipoAlbaran = services.GetService(Of BusinessEnum.enumTipoAlbaran)()
+            If valorTipoAlbaran = enumTipoAlbaran.Desconocido Then
+                valorTipoAlbaran = ProcessServer.ExecuteTask(Of String, enumTipoAlbaran)(AddressOf ProcesoAlbaranVenta.ValidarTipoAlbaran, data.IDTipoAlbaran, services)
+            End If
+
+            Dim updateData As StockUpdateData = ProcessServer.ExecuteTask(Of DataValidarAlmacenes, StockUpdateData)(AddressOf ValidarAlmacenes, dva, services)
+            If Not updateData Is Nothing Then
+                ReDim Preserve aStkUD(aStkUD.Length)
+                aStkUD(aStkUD.Length - 1) = updateData
+                Return aStkUD
+            End If
+        End If
+
+
+        Select Case data.Circuito
+            Case Circuito.Ventas
+                Dim Articulos As EntityInfoCache(Of ArticuloInfo) = services.GetService(Of EntityInfoCache(Of ArticuloInfo))()
+                Dim ArtInfo As ArticuloInfo = Articulos.GetEntity(data.LineaAlbaran("IDArticulo"))
+                If ArtInfo.GestionStockPorLotes Then
+                    Dim QLotesAsignado As Decimal = CDec(data.LotesLineaAlbaran.Compute("SUM(QInterna)", Nothing))
+                    If CDec(data.LineaAlbaran("QInterna")) <> QLotesAsignado Then
+                        ApplicationService.GenerateError([Global].ParseFormatString("La Cantidad de la línea del Albarán debe coincidir con la Cantidad repartida en los Lotes. {0} Artículo {1}", vbNewLine, Quoted(data.LineaAlbaran("IDArticulo"))))
+                    Else
+                        Dim SegundaUnidad As Boolean = ProcessServer.ExecuteTask(Of String, Boolean)(AddressOf ProcesoComunes.AplicarSegundaUnidad, data.LineaAlbaran("IDArticulo"), services)
+                        If SegundaUnidad Then
+                            Dim QLotesAsignado2 As Decimal = CDec(data.LotesLineaAlbaran.Compute("SUM(QInterna2)", Nothing))
+                            If CDec(data.LineaAlbaran("QInterna2")) <> QLotesAsignado2 Then
+                                ApplicationService.GenerateError([Global].ParseFormatString("La Cantidad en Segunda Unidad de la línea del Albarán debe coincidir con la Cantidad repartida en los Lotes. {0} Artículo {1}", vbNewLine, Quoted(data.LineaAlbaran("IDArticulo"))))
+                            End If
+                        End If
+                    End If
+                End If
+        End Select
+
+        Dim stkData As StockData
+        Dim csd As New DataCrearStockDataAlbaran(data.IDAlbaran, data.NAlbaran, data.FechaAlbaran, data.LineaAlbaran, Nothing, data.ImporteExtraA, data.ImporteExtraB)
+        If data.LotesLineaAlbaran Is Nothing OrElse data.LotesLineaAlbaran.Rows.Count = 0 Then
+            '//Linea de Albarán sin lotes
+            stkData = ProcessServer.ExecuteTask(Of DataCrearStockDataAlbaran, StockData)(AddressOf CrearStockDataAlbaran, csd, services)
+            Dim EstTipoMovto As New DataEstablecerTipoMovimiento(stkData, csd.LineaAlbaran, data.LineasAlbaran)
+            Select Case data.Circuito
+                Case Circuito.Compras
+                    stkData = ProcessServer.ExecuteTask(Of DataEstablecerTipoMovimiento, StockData)(AddressOf EstablecerTipoMovimientoAC, EstTipoMovto, services)
+                Case Circuito.Ventas
+                    stkData = ProcessServer.ExecuteTask(Of DataEstablecerTipoMovimiento, StockData)(AddressOf EstablecerTipoMovimientoAV, EstTipoMovto, services)
+            End Select
+            Dim dcm As New DataCrearMovimiento(data.NumeroMovimiento, stkData)
+            Dim updateData As StockUpdateData = ProcessServer.ExecuteTask(Of DataCrearMovimiento, StockUpdateData)(AddressOf CrearMovimiento, dcm, services)
+            If Not updateData Is Nothing Then
+                Select Case data.Circuito
+                    Case Circuito.Compras
+                        If updateData.Estado <> EstadoStock.NoActualizado Then
+                            If updateData.Estado = EstadoStock.Actualizado AndAlso data.NumeroMovimiento <> updateData.NumeroMovimiento Then data.NumeroMovimiento = updateData.NumeroMovimiento
+                            ProcessServer.ExecuteTask(Of DataRow)(AddressOf PrepararActivoUltimaCompra, data.LineaAlbaran, services)
+                        Else
+                            'ProcessServer.ExecuteTask(Of DataActualizarLineas)(AddressOf MovimientoCorreccion, act, services)
+                            If updateData.Estado = EstadoStock.NoActualizado AndAlso Length(data.LineaAlbaran("IDMovimiento")) > 0 Then
+                                Dim actMovto As New DataActualizarMovimiento(enumTipoActualizacion.Eliminar, data.LineaAlbaran("IDMovimiento"))
+                                ProcessServer.ExecuteTask(Of DataActualizarMovimiento)(AddressOf ActualizarMovimiento, actMovto, services)
+                            End If
+                        End If
+
+                        Dim act As New DataActualizarLineas(updateData, data.LineaAlbaran)
+                        ProcessServer.ExecuteTask(Of DataActualizarLineas)(AddressOf ActualizarLineasAC, act, services)
+                    Case Circuito.Ventas
+                        'ProcessServer.ExecuteTask(Of DataActualizarLineas)(AddressOf MovimientoCorreccion, act, services)
+
+                        If updateData.Estado = EstadoStock.NoActualizado AndAlso Length(data.LineaAlbaran("IDMovimiento")) > 0 Then
+                            Dim actMovto As New DataActualizarMovimiento(enumTipoActualizacion.Eliminar, data.LineaAlbaran("IDMovimiento"))
+                            ProcessServer.ExecuteTask(Of DataActualizarMovimiento)(AddressOf ActualizarMovimiento, actMovto, services)
+                        End If
+                        Dim act As New DataActualizarLineas(updateData, data.LineaAlbaran)
+                        ProcessServer.ExecuteTask(Of DataActualizarLineas)(AddressOf ActualizarLineasAV, act, services)
+
+                        'If updateData.Estado = EstadoStock.Actualizado Then
+                        '    Dim desda As New DataEntradaStockEnDepositoOAlquiler
+                        '    desda.IDCliente = data.IDCliente
+                        '    desda.lineaAlbaran = data.LineaAlbaran
+                        '    desda.NumeroMovimiento = updateData.NumeroMovimiento
+                        '    desda.Salida = stkData
+                        '    desda.UpdateSalida = updateData
+                        '    If valorTipoAlbaran = enumTipoAlbaran.Intercambio Then
+                        '        ProcessServer.ExecuteTask(Of DataActualizarStockAlbaranTx)(AddressOf ActualizarLineaPedidoDeIntercambio, data, services)
+                        '        ProcessServer.ExecuteTask(Of DataEntradaStockEnDepositoOAlquiler)(AddressOf EntradaStockDeIntercambio, desda, services)
+                        '    Else
+                        '        Dim updateEntrada As StockUpdateData = ProcessServer.ExecuteTask(Of DataEntradaStockEnDepositoOAlquiler, StockUpdateData)(AddressOf EntradaStockEnDepositoOAlquiler, desda, services)
+                        '        If Not updateEntrada Is Nothing Then
+                        '            ReDim Preserve aStkUD(aStkUD.Length)
+                        '            aStkUD(aStkUD.Length - 1) = updateEntrada
+                        '        End If
+                        '    End If
+                        'End If
                 End Select
             End If
             If Not updateData Is Nothing Then

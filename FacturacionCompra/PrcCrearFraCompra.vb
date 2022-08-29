@@ -30,6 +30,7 @@ Public Class PrcCrearFraCompra
         Me.AddTask(Of DocumentoFacturaCompra)(AddressOf ProcesoFacturacionCompra.CalcularBasesImponibles)
         Me.AddTask(Of DocumentoFacturaCompra)(AddressOf ProcesoFacturacionCompra.CalcularTotales)
         Me.AddTask(Of DocumentoFacturaCompra)(AddressOf ProcesoFacturacionCompra.NuevaLineaFacturaObraEntregaCuenta)
+
         ' Me.AddTask(Of DocumentoFacturaCompra)(AddressOf ProcesoFacturacionCompra.AsignarClaveOperacion)
         ' Me.AddTask(Of DocumentoFacturaCompra)(AddressOf ProcesoFacturacionCompra.ValidarDocumento)
 

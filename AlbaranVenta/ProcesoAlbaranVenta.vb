@@ -890,6 +890,38 @@
             End If
         End If
     End Sub
+    <Task()> Public Shared Sub ActualizacionAutomaticaStock2(ByVal Doc As DocumentoAlbaranVenta, ByVal services As ServiceProvider)
+        Dim actualizar As Boolean
+        Dim AppParamsAlb As ParametroAlbaranVenta = services.GetService(Of ParametroAlbaranVenta)()
+        If Not AppParamsAlb Is Nothing Then
+            If Not Doc.HeaderRow.IsNull("IDTipoAlbaran") AndAlso Doc.HeaderRow("IDTipoAlbaran").ToString() = AppParamsAlb.TipoAlbaranDeIntercambio Then
+                actualizar = False
+            Else
+                actualizar = AppParamsAlb.ActualizacionAutomaticaStock
+            End If
+        End If
+        If actualizar Then
+            '//Necesitamos recuperar el Doc de nuevo por el Estado de la Cabecera del Albarán. El UpdateDocument hace que se mantengan los estados de los registros. 
+            Doc = New DocumentoAlbaranVenta(Doc.HeaderRow("IDAlbaran"))
+
+            '//Terminamos de grabar el AV antes de empezar con la actualización de Stocks
+            AdminData.CommitTx(True)
+
+            '//Actualización de Stock de Lineas de Albarén
+            Dim ActStock As New ProcesoStocks.DataActualizarStockLineas(Doc)
+            Dim stockUD() As StockUpdateData = ProcessServer.ExecuteTask(Of ProcesoStocks.DataActualizarStockLineas, StockUpdateData())(AddressOf ActualizarStockLineas2, ActStock, services)
+            If Not stockUD Is Nothing AndAlso stockUD.Length > 0 Then
+                Dim alog As AlbaranLogProcess = services.GetService(Of AlbaranLogProcess)()
+                If Not alog Is Nothing Then
+                    For Each data As StockUpdateData In stockUD
+                        ReDim Preserve alog.StockUpdateData(UBound(alog.StockUpdateData) + 1)
+                        alog.StockUpdateData(UBound(alog.StockUpdateData)) = data
+                    Next
+                End If
+            End If
+        End If
+    End Sub
+
 
     <Task()> Public Shared Function ActualizarStockLineas(ByVal data As ProcesoStocks.DataActualizarStockLineas, ByVal services As ServiceProvider) As StockUpdateData()
         Dim stkUptData As StockUpdateData
@@ -974,6 +1006,150 @@
                             End If
                         Else ''//SIN GESTION POR LOTES
                             Dim uda() As StockUpdateData = ProcessServer.ExecuteTask(Of ProcesoStocks.DataActualizarStockAlbaranTx, StockUpdateData())(AddressOf ProcesoStocks.ActualizarStockAlbaranTx, actStockAlb, services)
+                            If Not uda Is Nothing AndAlso uda.Length > 0 AndAlso uda(0).NumeroMovimiento > 0 AndAlso uda(0).Estado = EstadoStock.Actualizado Then
+                                If Nz(data.DocumentoAlbaran.HeaderRow("NMovimiento"), 0) = 0 Then data.DocumentoAlbaran.HeaderRow("NMovimiento") = uda(0).NumeroMovimiento
+                            End If
+                            If Not uda Is Nothing AndAlso uda.Length > 0 Then stkUptData = uda(0)
+                            ArrayManager.Copy(uda, updateDataArray)
+                        End If
+                    End If
+
+                    dtLinea.ImportRow(lineaAlbaran)
+                    BusinessHelper.UpdateTable(data.DocumentoAlbaran.HeaderRow.Table)
+                    BusinessHelper.UpdateTable(dtLinea)
+                    BusinessHelper.UpdateTable(actStockAlb.LotesLineaAlbaran)
+
+                    If valorTipoAlbaran = enumTipoAlbaran.Intercambio AndAlso lineaAlbaran("EstadoStock") = enumavlEstadoStock.avlActualizado Then
+                        Dim Pedidos As DocumentInfoCache(Of DocumentoPedidoVenta) = services.GetService(Of DocumentInfoCache(Of DocumentoPedidoVenta))()
+                        If Pedidos.Keys.Count > 0 Then
+                            BusinessHelper.UpdateTable(Pedidos.GetDocument(lineaAlbaran("IDPedido")).dtLineas)
+                        End If
+                    End If
+                End If
+            End If
+            AdminData.CommitTx(True)
+
+            '//Una vez actualizada la linea, vemos si hay que contabilizarla
+            If AppParams.GestionInventarioPermanente Then
+                '//Si es un Albarán de Trasferencia no gestionamos el inventario permanente.
+                Dim ParamsAV As ParametroAlbaranVenta = services.GetService(Of ParametroAlbaranVenta)()
+                If data.DocumentoAlbaran.HeaderRow("IDTipoAlbaran") = ParamsAV.TipoAlbaranDeDeposito Then Exit Function
+
+                If lineaAlbaran(_AVL.EstadoStock) = enumavlEstadoStock.avlActualizado Then
+                    If Not IStockClass Is Nothing Then
+                        If (lineaAlbaran.RowState = DataRowState.Modified AndAlso _
+                           (Nz(lineaAlbaran(_AVL.EstadoStock), -1) <> Nz(lineaAlbaran(_AVL.EstadoStock, DataRowVersion.Original), -1)) OrElse _
+                            Nz(lineaAlbaran("Contabilizado"), enumContabilizado.NoContabilizado) = enumContabilizado.NoContabilizado) AndAlso _
+                            lineaAlbaran("EstadoFactura") = enumavlEstadoFactura.avlNoFacturado AndAlso _
+                            Nz(lineaAlbaran("EstadoFactura"), -1) = Nz(lineaAlbaran("EstadoFactura", DataRowVersion.Original), -1) Then
+                            Try
+                                IStockClass.SincronizarContaAlbaranVenta(lineaAlbaran("IDLineaAlbaran"), lineaAlbaran("Contabilizado"), services)
+                            Catch ex As Exception
+                                If Not stkUptData Is Nothing Then
+                                    stkUptData.Estado = EstadoStock.NoActualizado
+                                    stkUptData.Log = ex.Message
+                                    stkUptData.Detalle = ex.Message
+                                Else
+                                    Dim alog As AlbaranLogProcess = services.GetService(Of AlbaranLogProcess)()
+                                    If alog.CreateData Is Nothing Then alog.CreateData = New LogProcess
+                                    ReDim Preserve alog.CreateData.Errors(alog.CreateData.Errors.Length)
+
+                                    alog.CreateData.Errors(alog.CreateData.Errors.Length - 1) = New ClassErrors(lineaAlbaran("IDArticulo"), ex.Message)
+                                End If
+                            End Try
+                        End If
+                    End If
+                End If
+            End If
+
+        Next
+        Return updateDataArray
+    End Function
+
+    'David Velasco 10/8/22
+    <Task()> Public Shared Function ActualizarStockLineas2(ByVal data As ProcesoStocks.DataActualizarStockLineas, ByVal services As ServiceProvider) As StockUpdateData()
+        Dim stkUptData As StockUpdateData
+        Dim updateDataArray(-1) As StockUpdateData
+        Dim OperarioGenerico As String = New Parametro().OperarioGenerico()
+        Dim dtLinea As DataTable = data.DocumentoAlbaran.dtLineas.Clone
+        Dim actStockAlb As New ProcesoStocks.DataActualizarStockAlbaranTx
+        Dim f As New Filter(FilterUnionOperator.Or)
+        If Not data.IDLineasAlbaran Is Nothing AndAlso data.IDLineasAlbaran.Length > 0 Then
+            For Each IDLinea As Integer In data.IDLineasAlbaran
+                f.Add(New NumberFilterItem("IDLineaAlbaran", IDLinea))
+            Next
+        End If
+        Dim strWhere As String
+        If f.Count > 0 Then
+            strWhere = f.Compose(New AdoFilterComposer)
+        End If
+
+        Dim AppParams As ParametroGeneral = services.GetService(Of ParametroGeneral)()
+        Dim IStockClass As IStockInventarioPermanente
+        If AppParams.GestionInventarioPermanente Then
+            Dim datIStock As New ProcesoStocks.DataCreateIStockClass(InventariosPermanentes.ENSAMBLADO_INV_PERMANENTE_STOCKS, InventariosPermanentes.CLASE_INV_PERMANENTE_STOCKS)
+            IStockClass = ProcessServer.ExecuteTask(Of ProcesoStocks.DataCreateIStockClass, IStockInventarioPermanente)(AddressOf ProcesoStocks.CreateIStockInventarios, datIStock, services)
+        End If
+
+        For Each lineaAlbaran As DataRow In data.DocumentoAlbaran.dtLineas.Select(strWhere)
+            AdminData.BeginTx()
+            If lineaAlbaran(_AVL.EstadoStock) = enumavlEstadoStock.avlNoActualizado Then
+                Dim blnActualizarStockLinea As Boolean = True
+                actStockAlb.IDCliente = data.DocumentoAlbaran.HeaderRow("IDCliente")
+                actStockAlb.IDAlbaran = data.DocumentoAlbaran.HeaderRow("IDAlbaran")
+                actStockAlb.NAlbaran = data.DocumentoAlbaran.HeaderRow("NAlbaran")
+                actStockAlb.FechaAlbaran = data.DocumentoAlbaran.HeaderRow("FechaAlbaran")
+                actStockAlb.NumeroMovimiento = Nz(data.DocumentoAlbaran.HeaderRow("NMovimiento"), 0)
+                actStockAlb.IDTipoAlbaran = data.DocumentoAlbaran.HeaderRow("IDTipoAlbaran") & String.Empty
+                actStockAlb.IDAlmacenDeposito = data.DocumentoAlbaran.HeaderRow("IDAlmacenDeposito") & String.Empty
+                actStockAlb.LineaAlbaran = lineaAlbaran
+                actStockAlb.Circuito = Circuito.Ventas
+                actStockAlb.LotesLineaAlbaran = CType(data.DocumentoAlbaran, DocumentoAlbaranVenta).dtLote.Clone
+
+                Dim valorTipoAlbaran As enumTipoAlbaran = ProcessServer.ExecuteTask(Of String, enumTipoAlbaran)(AddressOf ProcesoAlbaranVenta.ValidarTipoAlbaran, actStockAlb.IDTipoAlbaran, services)
+
+                '//Actualizar Stock Contenedor
+                If Length(lineaAlbaran("IDArticuloContenedor")) > 0 Then
+                    Dim uda() As StockUpdateData = ProcessServer.ExecuteTask(Of ProcesoStocks.DataActualizarStockAlbaranTx, StockUpdateData())(AddressOf ActualizarStockContenedores, actStockAlb, services)
+                    If Not uda Is Nothing Then
+                        For Each stkud As StockUpdateData In uda
+                            If stkud.Estado <> EstadoStock.Actualizado Then
+                                blnActualizarStockLinea = False
+                            End If
+                        Next
+                    End If
+                    ArrayManager.Copy(uda, updateDataArray)
+                End If
+                If blnActualizarStockLinea Then
+                    '//Linea NORMAL, o de tipo KIT, o SUBCONTRATACION MANUAL(que NO proviene de una OF)
+                    Dim Articulos As EntityInfoCache(Of ArticuloInfo) = services.GetService(Of EntityInfoCache(Of ArticuloInfo))()
+                    Dim ArtInfo As ArticuloInfo = Articulos.GetEntity(lineaAlbaran("IDArticulo"))
+                    If ArtInfo.GestionStock Then
+                        If ArtInfo.GestionStockPorLotes Then  ''//CON GESTION POR LOTES
+                            '//Obtenemos los Lotes de la línea
+
+                            Dim fLinAlb As New Filter
+                            fLinAlb.Add(New NumberFilterItem(_AVLT.IDLineaAlbaran, lineaAlbaran(_AVL.IDLineaAlbaran)))
+                            Dim WhereLineaAlbaran As String = fLinAlb.Compose(New AdoFilterComposer)
+                            For Each lineaLote As DataRow In CType(data.DocumentoAlbaran, DocumentoAlbaranVenta).dtLote.Select(WhereLineaAlbaran)
+                                actStockAlb.LotesLineaAlbaran.ImportRow(lineaLote)
+                            Next
+
+                            If actStockAlb.LotesLineaAlbaran.Rows.Count > 0 Then
+                                Dim uda() As StockUpdateData = ProcessServer.ExecuteTask(Of ProcesoStocks.DataActualizarStockAlbaranTx, StockUpdateData())(AddressOf ProcesoStocks.ActualizarStockAlbaranTx, actStockAlb, services)
+                                If Not uda Is Nothing AndAlso uda.Length > 0 AndAlso uda(0).NumeroMovimiento > 0 AndAlso uda(0).Estado = EstadoStock.Actualizado Then
+                                    If Nz(data.DocumentoAlbaran.HeaderRow("NMovimiento"), 0) = 0 Then data.DocumentoAlbaran.HeaderRow("NMovimiento") = uda(0).NumeroMovimiento
+                                End If
+                                If Not uda Is Nothing AndAlso uda.Length > 0 Then stkUptData = uda(0)
+                                ArrayManager.Copy(uda, updateDataArray)
+                            Else
+                                Dim das As New ProcesoStocks.DataLogActualizarStock("El lote es obligatorio.", lineaAlbaran("IDArticulo"), lineaAlbaran("IDAlmacen"))
+                                Dim uda As StockUpdateData = ProcessServer.ExecuteTask(Of ProcesoStocks.DataLogActualizarStock, StockUpdateData)(AddressOf ProcesoStocks.LogActualizarStock, das, services)
+                                If Not uda Is Nothing Then stkUptData = uda
+                                ArrayManager.Copy(uda, updateDataArray)
+                            End If
+                        Else ''//SIN GESTION POR LOTES
+                            Dim uda() As StockUpdateData = ProcessServer.ExecuteTask(Of ProcesoStocks.DataActualizarStockAlbaranTx, StockUpdateData())(AddressOf ProcesoStocks.ActualizarStockAlbaranTx2, actStockAlb, services)
                             If Not uda Is Nothing AndAlso uda.Length > 0 AndAlso uda(0).NumeroMovimiento > 0 AndAlso uda(0).Estado = EstadoStock.Actualizado Then
                                 If Nz(data.DocumentoAlbaran.HeaderRow("NMovimiento"), 0) = 0 Then data.DocumentoAlbaran.HeaderRow("NMovimiento") = uda(0).NumeroMovimiento
                             End If

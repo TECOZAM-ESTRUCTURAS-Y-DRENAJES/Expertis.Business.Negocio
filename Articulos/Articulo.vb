@@ -3987,6 +3987,16 @@ Public Class DatosArticuloEstado
 
 #End Region
 
+    Public Sub executestrSQL(ByVal strSQL As String)
+
+        Try
+            AdminData.Execute(strSQL)
+        Catch ex As Exception
+            ApplicationService.GenerateError(ex.ToString & ": ERROR")
+        End Try
+        'MsgBox("Modificación realizada con exito en la tabla de ArticuloNSerie")
+    End Sub
+
     '21/01/2022 David Velasc
     'Actualiza tipo, fam y subfami por idarticulo
     Public Sub ActualizaTipFamSub(ByVal IDArticulo As String)

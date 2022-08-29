@@ -2376,8 +2376,46 @@ Public Class NegocioGeneral
             End If
         End If
     End Sub
+    'David Velasco Herrero 28/7/22 FACTURA PISO
+    <Task()> Public Shared Sub RellenaAnaliticaFactura(ByVal data As DataCopiarAnalitica, ByVal services As ServiceProvider)
+        '
 
 
+        '
+        Dim pkDestino As String
+        pkDestino = "IDLineaFactura"
+        For Each linea As DataRow In data.Doc.dtLineas.Select()
+            Dim UltimaRow As DataRow
+            Dim Acum As Double = 0 : Dim AcumA As Double = 0 : Dim AcumB As Double = 0
+            Dim HayAnalitica As Boolean = False
+
+            Dim lineaAnalitica As DataRow
+            Dim drNewLine As DataRow = data.Doc.dtAnalitica.NewRow
+            drNewLine(pkDestino) = linea(pkDestino)
+            drNewLine("IDCentroCoste") = "T636"
+            drNewLine("Porcentaje") = "100"
+            drNewLine("Importe") = linea("Importe")
+            Dim ValAyB As New ValoresAyB(New DataRowPropertyAccessor(drNewLine), data.Doc.IDMoneda, data.Doc.CambioA, data.Doc.CambioB)
+            ProcessServer.ExecuteTask(Of ValoresAyB, IPropertyAccessor)(AddressOf MantenimientoValoresAyB, ValAyB, services)
+            Acum += drNewLine("Importe")
+            AcumA += drNewLine("ImporteA")
+            AcumB += drNewLine("ImporteB")
+            UltimaRow = drNewLine
+            data.Doc.dtAnalitica.Rows.Add(drNewLine)
+            HayAnalitica = True
+            If HayAnalitica Then
+                If Acum <> linea("Importe") Then
+                    UltimaRow("Importe") += linea("Importe") - Acum
+                End If
+                If AcumA <> linea("ImporteA") Then
+                    UltimaRow("ImporteA") += linea("ImporteA") - AcumA
+                End If
+                If AcumB <> linea("ImporteB") Then
+                    UltimaRow("ImporteB") += linea("ImporteB") - AcumB
+                End If
+            End If
+        Next
+    End Sub
 
 #End Region
 

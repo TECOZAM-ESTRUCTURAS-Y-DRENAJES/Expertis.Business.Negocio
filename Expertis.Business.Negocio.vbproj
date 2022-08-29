@@ -249,6 +249,7 @@
     <Compile Include="AlbaranVenta\Alquileres\dataPrcAlbaranVentaMaquinaria.vb" />
     <Compile Include="AlbaranVenta\Alquileres\GroupUserAlquiler.vb" />
     <Compile Include="AlbaranVenta\Alquileres\PrcActualizarAlbaranAlquiler.vb" />
+    <Compile Include="AlbaranVenta\Alquileres\PrcActualizarAlbaranAlquilerLiquidar.vb" />
     <Compile Include="AlbaranVenta\Alquileres\PrcActualizarAlbaranAlquilerSinStock.vb" />
     <Compile Include="AlbaranVenta\Alquileres\PrcAlbaranAlquilerDeposito.vb" />
     <Compile Include="AlbaranVenta\Alquileres\PrcAlbaranarAlquiler.vb" />
@@ -290,11 +291,16 @@
     <Compile Include="Contador2.vb" />
     <Compile Include="ElementoAmortizable\ElementoPlusvalia.vb" />
     <Compile Include="FacturacionCompra\Devoluciones\DataPrcFacturacionDevolucion.vb" />
-    <Compile Include="FacturacionCompra\EntregasACuenta\FraCabCompraEntregaCta.vb" />
-    <Compile Include="FacturacionCompra\EntregasACuenta\GroupUserEntregasCtaCompra.vb" />
-    <Compile Include="FacturacionCompra\EntregasACuenta\PrcCrearFacturaCompraEntregaCta.vb" />
-    <Compile Include="FacturacionCompra\EntregasACuenta\PrcGenerarFacturaCompraEntregaCuenta.vb" />
+    <Compile Include="FacturacionCompra\Devoluciones\EntregasACuenta\FraCabCompraEntregaCta.vb" />
+    <Compile Include="FacturacionCompra\Devoluciones\EntregasACuenta\GroupUserEntregasCtaCompra.vb" />
+    <Compile Include="FacturacionCompra\Devoluciones\EntregasACuenta\PrcCrearFacturaCompraEntregaCta.vb" />
+    <Compile Include="FacturacionCompra\Devoluciones\EntregasACuenta\PrcGenerarFacturaCompraEntregaCuenta.vb" />
+    <Compile Include="FacturacionCompra\Facturacion\DataPrcFacturacionCompraPiso.vb" />
+    <Compile Include="FacturacionCompra\Facturacion\PrcFacturacionCompraPiso.vb" />
     <Compile Include="FacturacionCompra\FacturaCompraImpuesto.vb" />
+    <Compile Include="FacturacionCompra\FraCabCompraPiso.vb" />
+    <Compile Include="FacturacionCompra\FraLinCompraPiso.vb" />
+    <Compile Include="FacturacionCompra\GroupUserPisoCompra.vb" />
     <Compile Include="FacturacionCompra\Leasing\DataPrcFacturacionCompraLeasing.vb" />
     <Compile Include="FacturacionCompra\Leasing\FraCabCompraLeasing.vb" />
     <Compile Include="FacturacionCompra\Leasing\FraLinCompraLeasing.vb" />
@@ -310,6 +316,7 @@
     <Compile Include="FacturacionCompra\Devoluciones\PrcFacturacionDevolucion.vb" />
     <Compile Include="FacturacionCompra\NuevoGasto\PrcFacturacionNuevoGasto.vb" />
     <Compile Include="FacturacionCompra\Devoluciones\ProcessInfoFraDevolucion.vb" />
+    <Compile Include="FacturacionCompra\PrcCrearFraCompraPiso.vb" />
     <Compile Include="FacturacionComunes\FraLinEntregaCta.vb" />
     <Compile Include="FacturacionVenta\EntregasACuenta\FraCabEntregaCta.vb" />
     <Compile Include="FacturacionVenta\EntregasACuenta\GroupUserEntregasCtaVenta.vb" />

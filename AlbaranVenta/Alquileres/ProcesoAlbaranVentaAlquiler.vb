@@ -50,6 +50,7 @@
                 IDMaterial(UBound(IDMaterial)) = AVInfo.IDLinea
             End If
             htLins.Add(AVInfo.IDLinea, AVInfo)
+
         Next
 
         If IDMaterial.Length > 0 Then

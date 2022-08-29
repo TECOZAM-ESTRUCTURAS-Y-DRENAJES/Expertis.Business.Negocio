@@ -44,6 +44,44 @@
             ApplicationService.GenerateError("No hay elementos a Facturar. Revise sus datos.")
         End If
     End Function
+    'David Velasco 25/7/22
+    <Task()> Public Shared Function AgruparAlbaranesCompraPiso(ByVal data As DataPrcFacturacionCompraPiso, ByVal services As ServiceProvider) As FraCabCompra()
+        Dim dtLineas As DataTable
+
+        'se seleccionan todas las lineas de albaran no facturadas
+
+        Dim strViewName As String = "vFacturasPisos"
+
+        If data.IDPisoPago.Length > 0 Then
+            Dim values(data.IDPisoPago.Length - 1) As Object
+            data.IDPisoPago.CopyTo(values, 0)
+            Dim oFltr As New Filter
+            oFltr.Add(New InListFilterItem("IDPisoPago", values, FilterType.String))
+
+            dtLineas = New BE.DataEngine().Filter(strViewName, oFltr)
+        End If
+        If Not dtLineas Is Nothing AndAlso dtLineas.Rows.Count > 0 Then
+            Dim p As New Parametro
+            Dim strCondicionPago As String = p.CondicionPago
+
+            Dim oGrprUser As New GroupUserPisoCompra '(data.DteFechaFactura)
+
+            Dim grpAlb As DataColumn() = ProcessServer.ExecuteTask(Of DataGetGroupColumns, DataColumn())(AddressOf GetGroupColumns, New DataGetGroupColumns(dtLineas, enummpAgrupFactura.mpAlbaran), services)
+            Dim grpProv As DataColumn() = ProcessServer.ExecuteTask(Of DataGetGroupColumns, DataColumn())(AddressOf GetGroupColumns, New DataGetGroupColumns(dtLineas, enummpAgrupFactura.mpProveedor), services)
+
+            Dim groupers(1) As GroupHelper
+            groupers(enummpAgrupFactura.mpAlbaran) = New GroupHelper(grpAlb, oGrprUser)
+            groupers(enummpAgrupFactura.mpProveedor) = New GroupHelper(grpProv, oGrprUser)
+
+            For Each rwLin As DataRow In dtLineas.Rows
+                groupers(rwLin("AgrupFactura")).Group(rwLin)
+            Next
+
+            Return oGrprUser.Fras
+        Else
+            ApplicationService.GenerateError("No hay elementos a Facturar. Revise sus datos.")
+        End If
+    End Function
 
     <Task()> Public Shared Function AgruparAlbaranesAutoFraCompra(ByVal data As DataPrcAutofacturacionCompra, ByVal services As ServiceProvider) As FraCabCompra()
 
@@ -219,6 +257,13 @@
 
     <Task()> Public Shared Sub AsignarValoresPredeterminadosGenerales(ByVal fra As DocumentoFacturaCompra, ByVal services As ServiceProvider)
         Dim fraRow As DataRow = fra.HeaderRow
+        'David Velasco 29/8/22 Campo idpisopagos
+        Try
+            If fraRow.IsNull("IDPisoPagos") Then fraRow("IDPisoPagos") = System.DBNull.Value
+        Catch ex As Exception
+
+        End Try
+        'David
         If fraRow.IsNull("IDFactura") Then fraRow("IDFactura") = AdminData.GetAutoNumeric
         If fraRow.IsNull("FechaFactura") Then fraRow("FechaFactura") = Date.Today
         If fraRow.IsNull("SuFechaFactura") Then fraRow("SuFechaFactura") = fraRow("FechaFactura")
@@ -234,6 +279,7 @@
         If fraRow.IsNull("VencimientosManuales") Then fraRow("VencimientosManuales") = False
         If fraRow.IsNull("Enviar347") Then fraRow("Enviar347") = False
         If fraRow.IsNull("Tipofactura") Then fraRow("Tipofactura") = enumfccTipoFactura.fccNormal
+
     End Sub
 
     <Task()> Public Shared Sub AsignarProveedorGrupo(ByVal fra As DocumentoFacturaCompra, ByVal services As ServiceProvider)
@@ -334,6 +380,11 @@
         fra.AIva = New Contador().GetItemRow(fra.HeaderRow("IDContador"))("AIva")
     End Sub
 
+    'David Velasco 27/7/22 
+    <Task()> Public Shared Sub AsignarContadorPiso(ByVal fra As DocumentoFacturaCompra, ByVal services As ServiceProvider)
+        ProcessServer.ExecuteTask(Of DocumentoFacturaCompra)(AddressOf ProcesoComunes.AsignarContadorPiso, fra, services)
+    End Sub
+
     <Task()> Public Shared Sub AsignarNumeroFactura(ByVal fra As DocumentoFacturaCompra, ByVal services As ServiceProvider)
         If fra.HeaderRow.RowState = DataRowState.Added Then
             If Not IsDBNull(fra.HeaderRow("IDContador")) Then
@@ -381,6 +432,13 @@
         If Length(ProcInfo.SuFechaFactura) > 0 Then
             fra.HeaderRow("SuFechaFactura") = ProcInfo.SuFechaFactura
 
+            'David Velasco 27/7/22
+            'Para vincular la linea de los pagos de los pisos con la factura
+            Try
+                fra.HeaderRow("IDPisoPagos") = ProcInfo.IDPisosPagos
+            Catch ex As Exception
+
+            End Try
             Dim AppParams As ParametroFacturaCompra = services.GetService(Of ParametroFacturaCompra)()
             If AppParams.ControlarFechaFCProveedor Then
                 fra.HeaderRow("FechaFactura") = ProcInfo.SuFechaFactura
@@ -446,7 +504,63 @@
 
         End If
     End Sub
+    'David Velasco 26/07/22
+    <Task()> Public Shared Sub CrearLineasDesdePiso(ByVal docFactura As DocumentoFacturaCompra, ByVal services As ServiceProvider)
+        '0.Recupero la linea de la que tengo que sacar el Pago del piso y de los suministros.
+        Dim dt As New DataTable
+        Dim filtro As New Filter
+        filtro.Add("IDPisoPago", docFactura.HeaderRow("IDPisoPagos"))
 
+        dt = New BE.DataEngine().Filter("vFrmPagoPisosMes", filtro)
+
+        '1.Creo las instancias
+        Dim lineas As DataTable = docFactura.dtLineas
+        Dim fraCabAlb As FraCabCompra = docFactura.Cabecera
+        'Dim oFCL As New FacturaCompraLinea
+        '2.Relleno datos
+
+        '2.1 Formo la linea para el pago del piso ->TotalAlquiler
+        If dt(0)("TotalAlquiler") <> 0 Then
+
+            Dim linea As DataRow = lineas.NewRow
+            ProcessServer.ExecuteTask(Of DataRow)(AddressOf AsignarValoresPredeterminadosLineaObligatorios, linea, services)
+            linea("IDFactura") = docFactura.HeaderRow("IDFactura")
+            linea("IDArticulo") = "PISO"
+            Dim dtArticulo As New DataTable
+            Dim f As New Filter
+            f.Add("IDArticulo", FilterOperator.Equal, "PISO")
+            dtArticulo = New BE.DataEngine().Filter("tbMaestroArticulo", f)
+
+            linea("DescArticulo") = dtArticulo(0)("DescArticulo")
+            linea("CContable") = dtArticulo(0)("CCCompra")
+            linea("SeguimientoTarifa") = "PAGO GENERADO DE PISOS"
+            linea("Precio") = dt(0)("TotalAlquiler")
+            linea("Cantidad") = 1
+            linea("QInterna") = 1
+            lineas.Rows.Add(linea.ItemArray)
+        End If
+        '2.2 Formo la linea para el pago de los suminstros -->TotalPisos
+        If dt(0)("TotalGastos") <> 0 Then
+
+            Dim linea As DataRow = lineas.NewRow
+            ProcessServer.ExecuteTask(Of DataRow)(AddressOf AsignarValoresPredeterminadosLineaObligatorios, linea, services)
+            linea("IDFactura") = docFactura.HeaderRow("IDFactura")
+            linea("IDArticulo") = "SUMINISTRO"
+            Dim dtArticulo As New DataTable
+            Dim f As New Filter
+            f.Add("IDArticulo", FilterOperator.Equal, "SUMINISTRO")
+            dtArticulo = New BE.DataEngine().Filter("tbMaestroArticulo", f)
+
+            linea("DescArticulo") = dtArticulo(0)("DescArticulo")
+            linea("CContable") = dtArticulo(0)("CCCompra")
+            linea("SeguimientoTarifa") = "PAGO GENERADO DE PISOS"
+            linea("Precio") = dt(0)("TotalGastos")
+            linea("Cantidad") = 1
+            linea("QInterna") = 1
+            lineas.Rows.Add(linea.ItemArray)
+        End If
+
+    End Sub
     <Task()> Public Shared Sub CrearLineasDesdeAlbaran(ByVal docFactura As DocumentoFacturaCompra, ByVal services As ServiceProvider)
         Dim dtAlbaran As DataTable = ProcessServer.ExecuteTask(Of DocumentoFacturaCompra, DataTable)(AddressOf RecuperarDatosAlbaran, docFactura, services)
         Dim lineas As DataTable = docFactura.dtLineas
@@ -724,7 +838,6 @@
         Dim fcl As New FacturaCompraLinea
         Dim acl As New AlbaranCompraLinea
 
-
         Dim fraCabAlb As FraCabCompra = docFactura.Cabecera
 
         Dim ids(CType(fraCabAlb, FraCabCompraAlbaran).Lineas.Length - 1) As Object
@@ -751,6 +864,35 @@
         row("QInterna") = 0
         row("Cantidad") = 0
     End Sub
+
+    <Task()> Public Shared Sub AsignarValoresPredeterminadosLineaObligatorios(ByVal row As DataRow, ByVal services As ServiceProvider)
+        row("IdLineaFactura") = AdminData.GetAutoNumeric
+        row("IDUdMedida") = "UND"
+        row("Cantidad") = 0
+        row("Precio") = 0
+        row("PrecioA") = 0
+        row("PrecioB") = 0
+        row("UdValoracion") = 1
+        row("Dto1") = 0
+        row("Dto2") = 0
+        row("Dto3") = 0
+        row("Importe") = 0
+        row("ImporteA") = 0
+        row("ImporteB") = 0
+        row("EstadoInmovilizado") = 0
+        row("Marca") = 0
+        row("IDTipoIVA") = "00"
+        row("TipoLineaFactura") = 0
+        row("IDCentroGestion") = "008"
+        row("IDUdInterna") = "UND"
+        row("Factor") = 1
+        row("QInterna") = 0
+        row("Dto") = 0
+        row("DtoProntoPago") = 0
+        row("NoDeclarar") = 0
+
+    End Sub
+
 
 #End Region
 
@@ -789,6 +931,77 @@
             End If
         End If
     End Sub
+    'David Velasco 28/7/22 Pago desde pisos
+    <Task()> Public Shared Sub CentroCosteEnAnalitica(ByVal Doc As DocumentoFacturaCompra, ByVal services As ServiceProvider)
+        Try
+            'OBTENGO EL NOBRA DEL CONTRATO QUE SERÁ EL CENTRO DE COSTE
+            Dim idpisopagos As String = Doc.HeaderRow("IDPisoPagos")
+            Dim dt As New DataTable
+            Dim f As New Filter
+            f.Add("IDPisoPago", FilterOperator.Equal, idpisopagos)
+            dt = New BE.DataEngine().Filter("tbPisosPagos", f)
+
+            Dim idcontrato As String = dt(0)("IDContrato")
+
+            Dim dt2 As New DataTable
+            Dim f2 As New Filter
+            f2.Add("IDContrato", FilterOperator.Equal, idcontrato)
+            dt2 = New BE.DataEngine().Filter("tbPisosContrato", f2)
+            Dim idobra As String
+            idobra = dt2(0)("IDObra")
+
+            Dim dt3 As New DataTable
+            Dim f3 As New Filter
+            f3.Add("IDObra", FilterOperator.Equal, idobra)
+            dt3 = New BE.DataEngine().Filter("tbObraCabecera", f3)
+            Dim nobra As String
+            nobra = dt3(0)("NObra")
+            'OBTENGO LA ESTRUCTURA DE LA TABLA CENTRO DE COSTE 
+            Dim dtAnaliticaOrigen As DataTable = New BE.DataEngine().Filter("tbFacturaCompraAnalitica", New NoRowsFilterItem)
+            Dim datosCopia As New NegocioGeneral.DataCopiarAnalitica(dtAnaliticaOrigen, Doc)
+
+            'ProcessServer.ExecuteTask(Of NegocioGeneral.DataCopiarAnalitica)(AddressOf NegocioGeneral.RellenaAnaliticaFactura, datosCopia, services)
+            'Creo las lineas del centro de coste
+            Dim pkDestino As String
+            pkDestino = "IDLineaFactura"
+            For Each linea As DataRow In Doc.dtLineas.Select()
+                Dim UltimaRow As DataRow
+                Dim Acum As Double = 0 : Dim AcumA As Double = 0 : Dim AcumB As Double = 0
+                Dim HayAnalitica As Boolean = False
+
+                Dim lineaAnalitica As DataRow
+                Dim drNewLine As DataRow = Doc.dtAnalitica.NewRow
+                drNewLine(pkDestino) = linea(pkDestino)
+                drNewLine("IDCentroCoste") = nobra
+                drNewLine("Porcentaje") = "100"
+                drNewLine("Importe") = linea("Importe")
+                Dim ValAyB As New ValoresAyB(New DataRowPropertyAccessor(drNewLine), Doc.IDMoneda, Doc.CambioA, Doc.CambioB)
+                ProcessServer.ExecuteTask(Of ValoresAyB, IPropertyAccessor)(AddressOf NegocioGeneral.MantenimientoValoresAyB, ValAyB, services)
+                Acum += drNewLine("Importe")
+                AcumA += drNewLine("ImporteA")
+                AcumB += drNewLine("ImporteB")
+                UltimaRow = drNewLine
+                Doc.dtAnalitica.Rows.Add(drNewLine)
+                HayAnalitica = True
+                If HayAnalitica Then
+                    If Acum <> linea("Importe") Then
+                        UltimaRow("Importe") += linea("Importe") - Acum
+                    End If
+                    If AcumA <> linea("ImporteA") Then
+                        UltimaRow("ImporteA") += linea("ImporteA") - AcumA
+                    End If
+                    If AcumB <> linea("ImporteB") Then
+                        UltimaRow("ImporteB") += linea("ImporteB") - AcumB
+                    End If
+                End If
+            Next
+
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
 
 #End Region
 

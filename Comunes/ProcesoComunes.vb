@@ -55,7 +55,20 @@ Public Class ProcesoComunes
             End If
         End If
     End Sub
+    'David Velasco 27/7/22 
+    <Task()> Public Shared Sub AsignarContadorPiso(ByVal Doc As DocumentCabLin, ByVal services As ServiceProvider)
 
+        Dim Info As ProcessInfo = services.GetService(Of ProcessInfo)()
+        Doc.HeaderRow("IDContador") = Info.IDContador
+        Dim TipoContador As CentroGestion.ContadorEntidad
+        TipoContador = CentroGestion.ContadorEntidad.FacturaCompra
+        Dim o As New CentroEntidad
+        o.CentroGestion = Doc.HeaderRow("IDCentroGestion") & String.Empty
+        o.ContadorEntidad = TipoContador
+        Doc.HeaderRow("IDContador") = "FCVV22"
+        Info.IDContadorEntidad = Doc.HeaderRow("IDContador")
+
+    End Sub
 #End Region
 
 #Region " Totales Documentos "
