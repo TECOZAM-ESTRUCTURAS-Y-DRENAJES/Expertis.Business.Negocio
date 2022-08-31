@@ -161,7 +161,7 @@ Public Class GestionCobrosCabecera
 
                 'Acumular los saldos desde enero a diciembre,descartado 20/05/2009 mostrar por meses
                 '''''''''AcumularSaldos(dtDetalles)
-                'Actualizar utilizando la clase
+                ''Actualizar utilizando la clase
                 cLineas.Update(dtDetalles)
             End If
 
@@ -173,12 +173,12 @@ Public Class GestionCobrosCabecera
             dtDetalles = Nothing
         Catch ex As Exception
             MsgBox(ex.StackTrace)
-            MsgBox(ex.HelpLink)
             MsgBox(ex.Message, MsgBoxStyle.Exclamation, "Error al actualizar lineas.")
         End Try
         '' Bien
         Return 1
     End Function
+
     Public Function ObtieneTabla(ByVal strIdcobros As String, ByVal shEjercicio As String) As DataTable
         '' Con el id de la cabecera actualizar las lineas
         ' Crear los detalles

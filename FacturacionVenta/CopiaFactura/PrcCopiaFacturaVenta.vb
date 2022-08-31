@@ -27,11 +27,12 @@ Public Class PrcCopiaFacturaVenta
     End Sub
 
     'Ibis Adolfo 20220208
-    '<Task()> Public Shared Function DatosIniciales(ByVal data As Integer, ByVal services As ServiceProvider) As FraCabVentaCopia
-    '    Dim Dr As DataRow = New FacturaVentaCabecera().GetItemRow(data)
-    '    Dim FVC As New FraCabVentaCopia(Dr)
-    '    Return FVC
-    'End Function
+    <Task()> Public Shared Function DatosIniciales(ByVal data As Integer, ByVal services As ServiceProvider) As FraCabVentaCopia
+        Dim Dr As DataRow = New FacturaVentaCabecera().GetItemRow(data)
+        Dim FVC As New FraCabVentaCopia(Dr)
+        Return FVC
+    End Function
+
     <Task()> Public Shared Function DatosIniciales(ByVal data As TECDataPrcCopiarFactura, ByVal services As ServiceProvider) As FraCabVentaCopia
         If Nz(data.idContador, "") <> "" Then services.RegisterService(New ProcessInfo(data.idContador))
         Dim Dr As DataRow = New FacturaVentaCabecera().GetItemRow(data.idFactura)
