@@ -956,6 +956,11 @@
             dt3 = New BE.DataEngine().Filter("tbObraCabecera", f3)
             Dim nobra As String
             nobra = dt3(0)("NObra")
+
+            'Correccion para los nobra de ofizam y ofisec
+            If nobra = "OFIZAM" Or nobra = "OFI-SEC" Then
+                nobra = "999"
+            End If
             'OBTENGO LA ESTRUCTURA DE LA TABLA CENTRO DE COSTE 
             Dim dtAnaliticaOrigen As DataTable = New BE.DataEngine().Filter("tbFacturaCompraAnalitica", New NoRowsFilterItem)
             Dim datosCopia As New NegocioGeneral.DataCopiarAnalitica(dtAnaliticaOrigen, Doc)
