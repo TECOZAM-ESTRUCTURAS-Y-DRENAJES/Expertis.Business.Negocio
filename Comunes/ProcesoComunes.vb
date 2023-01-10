@@ -65,7 +65,7 @@ Public Class ProcesoComunes
         Dim o As New CentroEntidad
         o.CentroGestion = Doc.HeaderRow("IDCentroGestion") & String.Empty
         o.ContadorEntidad = TipoContador
-        Doc.HeaderRow("IDContador") = "FCVV22"
+        Doc.HeaderRow("IDContador") = "FCVV23"
         Info.IDContadorEntidad = Doc.HeaderRow("IDContador")
 
     End Sub

@@ -961,6 +961,29 @@
             If nobra = "OFIZAM" Or nobra = "OFI-SEC" Then
                 nobra = "999"
             End If
+            If nobra = "dp18" Then
+                nobra = "dp018"
+            End If
+            If nobra = "dp19" Then
+                nobra = "dp019"
+            End If
+            If nobra = "dp20" Then
+                nobra = "dp020"
+            End If
+            If nobra = "dp21" Then
+                nobra = "dp021"
+            End If
+            If nobra = "dp22" Then
+                nobra = "dp022"
+            End If
+            If nobra = "dp23" Then
+                nobra = "dp023"
+            End If
+            If nobra = "dp24" Then
+                nobra = "dp024"
+            End If
+
+
             'OBTENGO LA ESTRUCTURA DE LA TABLA CENTRO DE COSTE 
             Dim dtAnaliticaOrigen As DataTable = New BE.DataEngine().Filter("tbFacturaCompraAnalitica", New NoRowsFilterItem)
             Dim datosCopia As New NegocioGeneral.DataCopiarAnalitica(dtAnaliticaOrigen, Doc)
