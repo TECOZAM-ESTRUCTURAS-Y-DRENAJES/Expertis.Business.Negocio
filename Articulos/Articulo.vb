@@ -4015,11 +4015,6 @@ Public Class DatosArticuloEstado
     End Sub
     Public Sub actualizaPrecioYReposicion(ByVal IDArticulo As String, ByVal ValorA As String, ByVal PrecioA As String)
 
-        'Dim strSQL As String
-        'strSQL = " UPDATE tbMaestroArticulo"
-        'strSQL &= " SET ValorReposicionA = ('" & ValorA & "'),ValorReposicionB = ('" & ValorA & "'),FechaEstandar = ('" & Today & "'),FechaValorReposicion = ('" & Today & "'), PrecioEstandarA = ('" & PrecioA & "'),PrecioEstandarB = ('" & PrecioA & "')"
-        'strSQL &= " WHERE IDArticulo = ('" & IDArticulo & "')"
-
         Dim strSQL As String
         strSQL = " UPDATE tbMaestroArticulo "
         strSQL &= "SET ValorReposicionA ='" & ValorA & "',ValorReposicionB ='" & ValorA & "',FechaEstandar ='" & Today & "',FechaValorReposicion ='" & Today & "', PrecioEstandarA ='" & PrecioA & "', PrecioEstandarB ='" & PrecioA & "'"
@@ -4028,9 +4023,16 @@ Public Class DatosArticuloEstado
         Try
             AdminData.Execute(strSQL)
         Catch ex As Exception
-            ApplicationService.GenerateError(ex.ToString & ": ERROR")
         End Try
-        'MsgBox("Modificación realizada con exito en la tabla de ArticuloNSerie")
+
+        strSQL = " UPDATE tbMaestroArticuloE4 "
+        strSQL &= "SET ValorReposicionA ='" & ValorA & "',ValorReposicionB ='" & ValorA & "',FechaEstandar ='" & Today & "',FechaValorReposicion ='" & Today & "', PrecioEstandarA ='" & PrecioA & "', PrecioEstandarB ='" & PrecioA & "'"
+        strSQL &= " WHERE IDArticulo='" & IDArticulo & "'"
+
+        Try
+            AdminData.Execute(strSQL)
+        Catch ex As Exception
+        End Try
     End Sub
 
     'Informa del tipo del articulo pasado para ver si es del 30
@@ -4085,5 +4087,22 @@ Public Class DatosArticuloEstado
             ApplicationService.GenerateError(ex.ToString & ": ERROR")
         End Try
 
+    End Sub
+    'David Velasco 17/01/2023
+    Public Sub actualizaPrecioCompra(ByVal IDArticulo As String, ByVal preciocompra As String)
+
+        Dim strSQL As String
+        Dim usuario As String
+        usuario = AdminData.GetSessionInfo.UserName
+
+        strSQL = " UPDATE tbMaestroArticulo "
+        strSQL &= "SET PrecioUltimaCompraA ='" & preciocompra & "',PrecioUltimaCompraB ='" & preciocompra & "',FechaModificacionAudi ='" & Today & "', UsuarioAudi='" & usuario & "'"
+        strSQL &= " WHERE IDArticulo='" & IDArticulo & "'"
+
+        Try
+            AdminData.Execute(strSQL)
+        Catch ex As Exception
+            ApplicationService.GenerateError(ex.ToString & ": ERROR")
+        End Try
     End Sub
 End Class
