@@ -65,9 +65,17 @@ Public Class ProcesoComunes
         Dim o As New CentroEntidad
         o.CentroGestion = Doc.HeaderRow("IDCentroGestion") & String.Empty
         o.ContadorEntidad = TipoContador
-        Doc.HeaderRow("IDContador") = "FCVV23"
-        Info.IDContadorEntidad = Doc.HeaderRow("IDContador")
+        '07/02/2023 Contador en la tabla
+        'Doc.HeaderRow("IDContador") = "FCVV23"
+        'Info.IDContadorEntidad = Doc.HeaderRow("IDContador")
 
+        Dim dt As New DataTable
+        Dim f As New Filter
+        dt = New BE.DataEngine().Filter("tbContadorPisos", f)
+        Dim contFacturaPiso As String
+        contFacturaPiso = dt.Rows(0)("IDContador")
+        Doc.HeaderRow("IDContador") = contFacturaPiso
+        Info.IDContadorEntidad = Doc.HeaderRow("IDContador")
     End Sub
 #End Region
 
