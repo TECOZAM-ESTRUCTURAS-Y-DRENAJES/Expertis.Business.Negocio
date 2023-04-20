@@ -115,12 +115,22 @@
       <AssemblyFolderKey>hklm\expertis.engine</AssemblyFolderKey>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Expertis.Business.ClasesTecozam, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Expertis.Business.ClasesTecozam, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Expertis.Business.Financiero, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Expertis.Business.General, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Expertis.Business.Obra, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Expertis.Business.Obra, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Expertis.Business.SEPA, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
@@ -138,10 +148,11 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Expertis.Engine.SqlDAL, Version=5.5.0.0, Culture=neutral, PublicKeyToken=f4e70a047dadc395, processorArchitecture=MSIL" />
     <Reference Include="Expertis.Engine.UI.CommonClasses, Version=5.5.0.0, Culture=neutral, PublicKeyToken=f4e70a047dadc395, processorArchitecture=MSIL" />
     <Reference Include="Expertis.Engine.UI.Design, Version=5.5.0.0, Culture=neutral, PublicKeyToken=f4e70a047dadc395, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\..\ExpertisNet50R2test\Bin\Expertis.Engine.UI.Design.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.VisualBasic.Compatibility">
       <Name>Microsoft.VisualBasic.Compatibility</Name>
@@ -233,6 +244,9 @@
     <Compile Include="AlbaranCompra\AlbLinPedidoCompra.vb" />
     <Compile Include="AlbaranCompra\DataPrcAlbaranarPedCompra.vb" />
     <Compile Include="AlbaranCompra\DocumentoAlbaranCompra.vb" />
+    <Compile Include="AlbaranVentaCabecera.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="AlbaranVentaNSerie.vb" />
     <Compile Include="AlbaranVenta\AbonosDistrib\AlbCabVentaAlbaran.vb" />
     <Compile Include="AlbaranVenta\AbonosDistrib\DataPrcCrearAlbaranVentaAbono.vb" />
@@ -316,6 +330,69 @@
     <Compile Include="FacturacionCompra\Devoluciones\PrcFacturacionDevolucion.vb" />
     <Compile Include="FacturacionCompra\NuevoGasto\PrcFacturacionNuevoGasto.vb" />
     <Compile Include="FacturacionCompra\Devoluciones\ProcessInfoFraDevolucion.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\CopiaPedido\PedCabCompraCopia.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\CopiaPedido\PrcCopiaPedidoCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\DataOrigenPC.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\DocumentoPedidoCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Mantenimiento\DataPrcCrearPedidoCompraMantenimiento.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Mantenimiento\GroupUserMantenimiento.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Mantenimiento\PedCabCompraMantenimiento.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Mantenimiento\PedLinCompraMantenimiento.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Mantenimiento\PrcCrearPedidoCompraMantenimiento.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Obras\DataPrcCrearPedidoCompraObras.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Obras\GroupUserCompraObras.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Obras\PedCabCompraObra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Obras\PedLinCompraObraMaterial.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Obras\PedLinCompraObraTrabajo.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Obras\PrcCrearPedidoCompraObras.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\OfertasComerciales\GroupUserCompraOfertasComerciales.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\OfertasComerciales\PedCabCompraOfertaComercial.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\OfertasComerciales\PedLinCompraOfertaComercial.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\OfertasComerciales\PrcCrearPedidoCompraOfertaComercial.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\OfertasCompra\DataOfertaCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\OfertasCompra\DataPrcCrearPedidoCompraOfertaCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\OfertasCompra\GroupUserOfertaCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\OfertasCompra\PedCabCompraOfertaCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\OfertasCompra\PedLinCompraOfertaCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\OfertasCompra\PrcCrearPedidoCompraOfertaCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\OrdenPedidoCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\PedCabCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\PedidoVenta\DataPrcCrearPedidoCompraDesdePedidoVenta.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\PedidoVenta\DataResultadoMultiempresaPC.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\PedidoVenta\GroupUserPCPedidosVenta.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\PedidoVenta\PedCabCompraPedidoVenta.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\PedidoVenta\PedLinCompraPedidoVenta.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\PedidoVenta\PrcCrearPedidoCompraDesdePedidoVenta.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\PedidoVenta\PrcPropuestaPedidoCompraDesdePedidoVenta.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\PedLinCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Planificacion\DataPrcCrearPedidoCompraPlanificacion.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Planificacion\GroupUserPlanificaciones.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Planificacion\PedCabCompraPlanif.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Planificacion\PedLinCompraPlanificacion.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Planificacion\PrcCrearPedidoCompraPlanificacion.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Planificacion\ProcessInfoPlanif.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\PrcCrearPedidoCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\ProcesoPedidoCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\ProcessInfoPC.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\ProgramaCompra\DataPrcCrearPedidoCompraPrograma.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\ProgramaCompra\DataProgramaCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\ProgramaCompra\GroupUserProgramaCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\ProgramaCompra\PedCabCompraProgramaCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\ProgramaCompra\PedLinCompraProgramaCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\ProgramaCompra\PrcCrearPedidoCompraPrograma.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\SolicitudCompra\DataPrcCrearPedidoCompraSolicitudCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\SolicitudCompra\DataSolicitudCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\SolicitudCompra\GroupUserSolicitudes.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\SolicitudCompra\PedCabCompraSolicitudCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\SolicitudCompra\PedLinCompraSolicitudCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\SolicitudCompra\PrcCrearPedidoCompraSolicitudCompra.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Subcontratacion\DataPrcCrearPedidoCompraSubcontratacion.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Subcontratacion\DataSubcontratacion.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Subcontratacion\GroupUserSubcontrataciones.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Subcontratacion\PedCabCompraSubcontratacion.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Subcontratacion\PedLinCompraSubcontratacion.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Subcontratacion\PrcCrearPedidoCompraSubcontratacion.vb" />
+    <Compile Include="FacturacionCompra\PedidoCompra\Subcontratacion\ProcessInfoSubcontratacion.vb" />
     <Compile Include="FacturacionCompra\PrcCrearFraCompraPiso.vb" />
     <Compile Include="FacturacionComunes\FraLinEntregaCta.vb" />
     <Compile Include="FacturacionVenta\EntregasACuenta\FraCabEntregaCta.vb" />
@@ -388,9 +465,6 @@
     </Compile>
     <Compile Include="AlbaranVentaBulto.vb">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AlbaranVentaCabecera.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="AlbaranVentaLinea.vb">
       <SubType>Code</SubType>
@@ -899,75 +973,12 @@
     <Compile Include="PedidoCompraPrecio.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PedidoCompra\CopiaPedido\PedCabCompraCopia.vb" />
-    <Compile Include="PedidoCompra\CopiaPedido\PrcCopiaPedidoCompra.vb" />
-    <Compile Include="PedidoCompra\OfertasCompra\DataOfertaCompra.vb" />
-    <Compile Include="PedidoCompra\DataOrigenPC.vb" />
-    <Compile Include="PedidoCompra\Mantenimiento\DataPrcCrearPedidoCompraMantenimiento.vb" />
-    <Compile Include="PedidoCompra\Obras\DataPrcCrearPedidoCompraObras.vb" />
-    <Compile Include="PedidoCompra\OfertasCompra\DataPrcCrearPedidoCompraOfertaCompra.vb" />
-    <Compile Include="PedidoCompra\PedidoVenta\DataPrcCrearPedidoCompraDesdePedidoVenta.vb" />
     <Compile Include="PedidoVenta\CopiaPedido\PedCabVentaCopia.vb" />
     <Compile Include="PedidoVenta\CopiaPedido\PrcCopiaPedidoVenta.vb" />
     <Compile Include="PedidoVenta\EDI\PedCabEDI.vb" />
     <Compile Include="PedidoVenta\PedidoCompra\DataPrcCrearPedidoVentaEnBDSecundaria.vb" />
-    <Compile Include="PedidoCompra\PedidoVenta\DataResultadoMultiempresaPC.vb" />
-    <Compile Include="PedidoCompra\PedidoVenta\GroupUserPCPedidosVenta.vb" />
-    <Compile Include="PedidoCompra\PedidoVenta\PedCabCompraPedidoVenta.vb" />
-    <Compile Include="PedidoCompra\PedidoVenta\PedLinCompraPedidoVenta.vb" />
-    <Compile Include="PedidoCompra\PedidoVenta\PrcCrearPedidoCompraDesdePedidoVenta.vb" />
     <Compile Include="PedidoVenta\PedidoCompra\PrcCrearPedidoVentaEnBDSecundaria.vb" />
-    <Compile Include="PedidoCompra\PedidoVenta\PrcPropuestaPedidoCompraDesdePedidoVenta.vb" />
     <Compile Include="PedidoVenta\PedidoCompra\ProcessInfoPVBBDDSec.vb" />
-    <Compile Include="PedidoCompra\Planificacion\DataPrcCrearPedidoCompraPlanificacion.vb" />
-    <Compile Include="PedidoCompra\ProgramaCompra\DataPrcCrearPedidoCompraPrograma.vb" />
-    <Compile Include="PedidoCompra\SolicitudCompra\DataPrcCrearPedidoCompraSolicitudCompra.vb" />
-    <Compile Include="PedidoCompra\Subcontratacion\DataPrcCrearPedidoCompraSubcontratacion.vb" />
-    <Compile Include="PedidoCompra\ProgramaCompra\DataProgramaCompra.vb" />
-    <Compile Include="PedidoCompra\SolicitudCompra\DataSolicitudCompra.vb" />
-    <Compile Include="PedidoCompra\Subcontratacion\DataSubcontratacion.vb" />
-    <Compile Include="PedidoCompra\DocumentoPedidoCompra.vb" />
-    <Compile Include="PedidoCompra\OfertasComerciales\GroupUserCompraOfertasComerciales.vb" />
-    <Compile Include="PedidoCompra\Mantenimiento\GroupUserMantenimiento.vb" />
-    <Compile Include="PedidoCompra\Obras\GroupUserCompraObras.vb" />
-    <Compile Include="PedidoCompra\OfertasCompra\GroupUserOfertaCompra.vb" />
-    <Compile Include="PedidoCompra\Planificacion\GroupUserPlanificaciones.vb" />
-    <Compile Include="PedidoCompra\ProgramaCompra\GroupUserProgramaCompra.vb" />
-    <Compile Include="PedidoCompra\SolicitudCompra\GroupUserSolicitudes.vb" />
-    <Compile Include="PedidoCompra\Subcontratacion\GroupUserSubcontrataciones.vb" />
-    <Compile Include="PedidoCompra\OrdenPedidoCompra.vb" />
-    <Compile Include="PedidoCompra\PedCabCompra.vb" />
-    <Compile Include="PedidoCompra\Mantenimiento\PedCabCompraMantenimiento.vb" />
-    <Compile Include="PedidoCompra\Obras\PedCabCompraObra.vb" />
-    <Compile Include="PedidoCompra\Planificacion\PedCabCompraPlanif.vb" />
-    <Compile Include="PedidoCompra\OfertasCompra\PedCabCompraOfertaCompra.vb" />
-    <Compile Include="PedidoCompra\ProgramaCompra\PedCabCompraProgramaCompra.vb" />
-    <Compile Include="PedidoCompra\SolicitudCompra\PedCabCompraSolicitudCompra.vb" />
-    <Compile Include="PedidoCompra\Subcontratacion\PedCabCompraSubcontratacion.vb" />
-    <Compile Include="PedidoCompra\OfertasComerciales\PedCabCompraOfertaComercial.vb" />
-    <Compile Include="PedidoCompra\PedLinCompra.vb" />
-    <Compile Include="PedidoCompra\Mantenimiento\PedLinCompraMantenimiento.vb" />
-    <Compile Include="PedidoCompra\Obras\PedLinCompraObraMaterial.vb" />
-    <Compile Include="PedidoCompra\Obras\PedLinCompraObraTrabajo.vb" />
-    <Compile Include="PedidoCompra\OfertasComerciales\PedLinCompraOfertaComercial.vb" />
-    <Compile Include="PedidoCompra\OfertasCompra\PedLinCompraOfertaCompra.vb" />
-    <Compile Include="PedidoCompra\Planificacion\PedLinCompraPlanificacion.vb" />
-    <Compile Include="PedidoCompra\ProgramaCompra\PedLinCompraProgramaCompra.vb" />
-    <Compile Include="PedidoCompra\SolicitudCompra\PedLinCompraSolicitudCompra.vb" />
-    <Compile Include="PedidoCompra\Subcontratacion\PedLinCompraSubcontratacion.vb" />
-    <Compile Include="PedidoCompra\PrcCrearPedidoCompra.vb" />
-    <Compile Include="PedidoCompra\Mantenimiento\PrcCrearPedidoCompraMantenimiento.vb" />
-    <Compile Include="PedidoCompra\Obras\PrcCrearPedidoCompraObras.vb" />
-    <Compile Include="PedidoCompra\OfertasCompra\PrcCrearPedidoCompraOfertaCompra.vb" />
-    <Compile Include="PedidoCompra\OfertasComerciales\PrcCrearPedidoCompraOfertaComercial.vb" />
-    <Compile Include="PedidoCompra\Planificacion\PrcCrearPedidoCompraPlanificacion.vb" />
-    <Compile Include="PedidoCompra\ProgramaCompra\PrcCrearPedidoCompraPrograma.vb" />
-    <Compile Include="PedidoCompra\SolicitudCompra\PrcCrearPedidoCompraSolicitudCompra.vb" />
-    <Compile Include="PedidoCompra\Subcontratacion\PrcCrearPedidoCompraSubcontratacion.vb" />
-    <Compile Include="PedidoCompra\ProcesoPedidoCompra.vb" />
-    <Compile Include="PedidoCompra\ProcessInfoPC.vb" />
-    <Compile Include="PedidoCompra\Planificacion\ProcessInfoPlanif.vb" />
-    <Compile Include="PedidoCompra\Subcontratacion\ProcessInfoSubcontratacion.vb" />
     <Compile Include="PedidoVentaAnalitica.vb">
       <SubType>Code</SubType>
     </Compile>

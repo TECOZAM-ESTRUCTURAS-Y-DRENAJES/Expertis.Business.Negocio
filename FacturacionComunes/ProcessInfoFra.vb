@@ -8,6 +8,7 @@ Public Class ProcessInfoFra
     Public SuFechaFactura As Date?
     Public ConPropuesta As Boolean = True
     Public IDPisosPagos As String
+    Public IDFacturaDocuwares As String
 
     Public Sub New(ByVal IDContador As String, _
                    ByVal TipoLineaDef As String, _
@@ -25,7 +26,10 @@ Public Class ProcessInfoFra
         Try
             Me.IDPisosPagos = IDPisosPagos
         Catch ex As Exception
-
+        End Try
+        Try
+            Me.IDFacturaDocuwares = IDFacturaDocuwares
+        Catch ex As Exception
         End Try
     End Sub
     'Public Sub New(ByVal IDContador As String, _

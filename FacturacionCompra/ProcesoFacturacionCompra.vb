@@ -1,4 +1,6 @@
-﻿Public Class ProcesoFacturacionCompra
+﻿Imports Solmicro.Expertis.Business.ClasesTecozam
+
+Public Class ProcesoFacturacionCompra
 
     <Task()> Public Shared Function CrearDocumento(ByVal data As UpdatePackage, ByVal services As ServiceProvider) As DocumentoFacturaCompra
         Return New DocumentoFacturaCompra(data)
@@ -57,6 +59,44 @@
             data.IDPisoPago.CopyTo(values, 0)
             Dim oFltr As New Filter
             oFltr.Add(New InListFilterItem("IDPisoPago", values, FilterType.String))
+
+            dtLineas = New BE.DataEngine().Filter(strViewName, oFltr)
+        End If
+        If Not dtLineas Is Nothing AndAlso dtLineas.Rows.Count > 0 Then
+            Dim p As New Parametro
+            Dim strCondicionPago As String = p.CondicionPago
+
+            Dim oGrprUser As New GroupUserPisoCompra '(data.DteFechaFactura)
+
+            Dim grpAlb As DataColumn() = ProcessServer.ExecuteTask(Of DataGetGroupColumns, DataColumn())(AddressOf GetGroupColumns, New DataGetGroupColumns(dtLineas, enummpAgrupFactura.mpAlbaran), services)
+            Dim grpProv As DataColumn() = ProcessServer.ExecuteTask(Of DataGetGroupColumns, DataColumn())(AddressOf GetGroupColumns, New DataGetGroupColumns(dtLineas, enummpAgrupFactura.mpProveedor), services)
+
+            Dim groupers(1) As GroupHelper
+            groupers(enummpAgrupFactura.mpAlbaran) = New GroupHelper(grpAlb, oGrprUser)
+            groupers(enummpAgrupFactura.mpProveedor) = New GroupHelper(grpProv, oGrprUser)
+
+            For Each rwLin As DataRow In dtLineas.Rows
+                groupers(rwLin("AgrupFactura")).Group(rwLin)
+            Next
+
+            Return oGrprUser.Fras
+        Else
+            ApplicationService.GenerateError("No hay elementos a Facturar. Revise sus datos.")
+        End If
+    End Function
+    'David Velasco 14/02/23
+    <Task()> Public Shared Function AgruparAlbaranesCompraDocuware(ByVal data As DataPrcFacturacionCompraDocuware, ByVal services As ServiceProvider) As FraCabCompra()
+        Dim dtLineas As DataTable
+
+        'se seleccionan todas las lineas de albaran no facturadas
+
+        Dim strViewName As String = "tbFacturasDocuware"
+
+        If data.IDFacturaDocuware.Length > 0 Then
+            Dim values(data.IDFacturaDocuware.Length - 1) As Object
+            data.IDFacturaDocuware.CopyTo(values, 0)
+            Dim oFltr As New Filter
+            oFltr.Add(New InListFilterItem("IDFacturaDocuware", values, FilterType.String))
 
             dtLineas = New BE.DataEngine().Filter(strViewName, oFltr)
         End If
@@ -1281,7 +1321,7 @@
                 ImporteImpuestosTotalA += Nz(dtImpuestos.Compute("SUM(ImporteA)", Nothing), 0)
                 ImporteImpuestosTotalB += Nz(dtImpuestos.Compute("SUM(ImporteB)", Nothing), 0)
             End If
-      
+
             data.Doc.HeaderRow("ImpImpuestos") = ImporteImpuestosTotal
             data.Doc.HeaderRow("ImpImpuestosA") = ImporteImpuestosTotalA
             data.Doc.HeaderRow("ImpImpuestosB") = ImporteImpuestosTotalB

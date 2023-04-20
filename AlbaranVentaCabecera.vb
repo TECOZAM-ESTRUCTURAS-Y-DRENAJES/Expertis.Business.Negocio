@@ -354,6 +354,30 @@ Public Class AlbaranVentaCabecera
         deleteProcess.AddTask(Of DataRow)(AddressOf ProcesoAlbaranVenta.ValidarAlbaranArqueoCaja)
         deleteProcess.AddTask(Of DataRow)(AddressOf ProcesoAlbaranVenta.ValidarAlbaranContado)
         deleteProcess.AddTask(Of DataRow)(AddressOf ActualizarAlbaranExpedicionDistribuidor)
+        'David Velasco 09/02/23
+        deleteProcess.AddTask(Of DataRow)(AddressOf BorrarMovimientosNSerie)
+    End Sub
+
+    <Task()> Public Shared Sub BorrarMovimientosNSerie(ByVal DocHeaderRow As DataRow, ByVal services As ServiceProvider)
+        Dim dtActivosNSerie As New DataTable
+        Dim f As New Filter
+        f.Add("NAlbaran", FilterOperator.Equal, DocHeaderRow("NAlbaran"))
+        dtActivosNSerie = New BE.DataEngine().Filter("tbHistoricoActivos", f)
+        Dim aux As New Business.ClasesTecozam.MetodosAuxiliares
+
+        If dtActivosNSerie.Rows.Count <> 0 Then
+            Dim sql As String
+            For Each dr As DataRow In dtActivosNSerie.Rows
+                'Actualizo en tbControlArticulosNSerie, el IDAlmacen. 
+                'Le tengo que poner el IDAlmacenOrigen de dtActivosNSerie
+                sql = "UPDATE tbControlArticulosNSerie SET IDAlmacen ='" & dr("IDAlmacenOrigen") & "' WHERE IDArticulo = '" & dr("IDArticulo") & "' AND NSerie = '" & dr("NSerie") & "'"
+                aux.EjecutarSql(sql)
+            Next
+            'Borro todos los movimientos en los cuales el albaran sea NAlbaran de tbHistoricoActivos
+            sql = "DELETE from tbHistoricoActivos where NAlbaran = '" & DocHeaderRow("NAlbaran") & "'"
+            aux.EjecutarSql(sql)
+
+        End If
     End Sub
 
     <Task()> Public Shared Sub ValidarDelConDAA(ByVal DocHeaderRow As DataRow, ByVal services As ServiceProvider)
