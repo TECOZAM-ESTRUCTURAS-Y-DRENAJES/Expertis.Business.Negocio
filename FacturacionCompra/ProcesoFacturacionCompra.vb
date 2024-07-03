@@ -971,6 +971,29 @@ Public Class ProcesoFacturacionCompra
             End If
         End If
     End Sub
+    'David V 03/7/24
+    'Este metodo devuelve el nº de filas que tendra la analitica en las facturas
+    Public Shared Function getCentrosCoste(ByVal dtPagoPiso As DataTable) As Integer
+        Try
+            If dtPagoPiso.Rows(0)("NObra2").ToString().Length = 0 Then
+                Return 1
+            End If
+
+            ' Verificar la longitud del campo NObra3.
+            If dtPagoPiso.Rows(0)("NObra3").ToString().Length = 0 Then
+                Return 2
+            End If
+
+            ' Verificar la longitud del campo NObra4.
+            If dtPagoPiso.Rows(0)("NObra4").ToString().Length = 0 Then
+                Return 3
+            Else
+                Return 4
+            End If
+        Catch ex As Exception
+        End Try
+    End Function
+
     'David Velasco 28/7/22 Pago desde pisos
     <Task()> Public Shared Sub CentroCosteEnAnalitica(ByVal Doc As DocumentoFacturaCompra, ByVal services As ServiceProvider)
         Try
@@ -981,12 +1004,18 @@ Public Class ProcesoFacturacionCompra
             f.Add("IDPisoPago", FilterOperator.Equal, idpisopagos)
             dt = New BE.DataEngine().Filter("tbPisosPagos", f)
 
+           
+
             Dim idcontrato As String = dt(0)("IDContrato")
 
             Dim dt2 As New DataTable
             Dim f2 As New Filter
             f2.Add("IDContrato", FilterOperator.Equal, idcontrato)
             dt2 = New BE.DataEngine().Filter("tbPisosContrato", f2)
+
+            Dim n_centrosCoste As Integer
+            n_centrosCoste = getCentrosCoste(dt2)
+
             Dim idobra As String
             idobra = dt2(0)("IDObra")
 
@@ -1032,42 +1061,157 @@ Public Class ProcesoFacturacionCompra
             'Creo las lineas del centro de coste
             Dim pkDestino As String
             pkDestino = "IDLineaFactura"
-            For Each linea As DataRow In Doc.dtLineas.Select()
-                Dim UltimaRow As DataRow
-                Dim Acum As Double = 0 : Dim AcumA As Double = 0 : Dim AcumB As Double = 0
-                Dim HayAnalitica As Boolean = False
 
-                Dim lineaAnalitica As DataRow
-                Dim drNewLine As DataRow = Doc.dtAnalitica.NewRow
-                drNewLine(pkDestino) = linea(pkDestino)
-                drNewLine("IDCentroCoste") = nobra
-                drNewLine("Porcentaje") = "100"
-                drNewLine("Importe") = linea("Importe")
-                Dim ValAyB As New ValoresAyB(New DataRowPropertyAccessor(drNewLine), Doc.IDMoneda, Doc.CambioA, Doc.CambioB)
-                ProcessServer.ExecuteTask(Of ValoresAyB, IPropertyAccessor)(AddressOf NegocioGeneral.MantenimientoValoresAyB, ValAyB, services)
-                Acum += drNewLine("Importe")
-                AcumA += drNewLine("ImporteA")
-                AcumB += drNewLine("ImporteB")
-                UltimaRow = drNewLine
-                Doc.dtAnalitica.Rows.Add(drNewLine)
-                HayAnalitica = True
-                If HayAnalitica Then
-                    If Acum <> linea("Importe") Then
-                        UltimaRow("Importe") += linea("Importe") - Acum
-                    End If
-                    If AcumA <> linea("ImporteA") Then
-                        UltimaRow("ImporteA") += linea("ImporteA") - AcumA
-                    End If
-                    If AcumB <> linea("ImporteB") Then
-                        UltimaRow("ImporteB") += linea("ImporteB") - AcumB
-                    End If
+
+            For Each linea As DataRow In Doc.dtLineas.Select()
+                If n_centrosCoste = 1 Then
+                    Dim drnewline As DataRow = Doc.dtAnalitica.NewRow
+                    drnewline(pkDestino) = linea(pkDestino)
+                    drnewline("idcentrocoste") = nobra
+                    drnewline("porcentaje") = "100"
+                    drnewline("Importe") = linea("Importe")
+                    drnewline("ImporteA") = linea("Importe")
+                    drnewline("ImporteB") = linea("Importe")
+                    Doc.dtAnalitica.Rows.Add(drnewline)
+                ElseIf n_centrosCoste = 2 Then
+                    '-FILA 1
+                    Dim drnewline As DataRow = Doc.dtAnalitica.NewRow
+                    drnewline(pkDestino) = linea(pkDestino)
+                    drnewline("idcentrocoste") = nobra
+                    drnewline("porcentaje") = "50"
+                    drnewline("Importe") = linea("Importe") * 0.5
+                    drnewline("ImporteA") = linea("Importe") * 0.5
+                    drnewline("ImporteB") = linea("Importe") * 0.5
+                    Doc.dtAnalitica.Rows.Add(drnewline)
+
+                    '-FILA 2
+                    Dim drnewline2 As DataRow = Doc.dtAnalitica.NewRow
+                    drnewline2 = Doc.dtAnalitica.NewRow
+                    drnewline2(pkDestino) = linea(pkDestino)
+                    drnewline2("idcentrocoste") = dt2(0)("NObra2").ToString
+                    drnewline2("porcentaje") = "50"
+                    drnewline2("Importe") = linea("Importe") * 0.5
+                    drnewline2("ImporteA") = linea("Importe") * 0.5
+                    drnewline2("ImporteB") = linea("Importe") * 0.5
+                    Doc.dtAnalitica.Rows.Add(drnewline2)
+                ElseIf n_centrosCoste = 3 Then
+                    '-FILA 1
+                    Dim drnewline As DataRow = Doc.dtAnalitica.NewRow
+                    drnewline(pkDestino) = linea(pkDestino)
+                    drnewline("idcentrocoste") = nobra
+                    drnewline("porcentaje") = "33,33"
+                    drnewline("Importe") = linea("Importe") * 0.33
+                    drnewline("ImporteA") = linea("Importe") * 0.33
+                    drnewline("ImporteB") = linea("Importe") * 0.33
+                    Doc.dtAnalitica.Rows.Add(drnewline)
+
+                    '-FILA 2
+                    Dim drnewline2 As DataRow = Doc.dtAnalitica.NewRow
+                    drnewline2 = Doc.dtAnalitica.NewRow
+                    drnewline2(pkDestino) = linea(pkDestino)
+                    drnewline2("idcentrocoste") = dt2(0)("NObra2").ToString
+                    drnewline2("porcentaje") = "33,33"
+                    drnewline2("Importe") = linea("Importe") * 0.33
+                    drnewline2("ImporteA") = linea("Importe") * 0.33
+                    drnewline2("ImporteB") = linea("Importe") * 0.33
+                    Doc.dtAnalitica.Rows.Add(drnewline2)
+
+                    '-FILA 3
+                    Dim drnewline3 As DataRow = Doc.dtAnalitica.NewRow
+                    drnewline3 = Doc.dtAnalitica.NewRow
+                    drnewline3(pkDestino) = linea(pkDestino)
+                    drnewline3("idcentrocoste") = dt2(0)("NObra3").ToString
+                    drnewline3("porcentaje") = "33,34"
+                    drnewline3("Importe") = linea("Importe") * 0.34
+                    drnewline3("ImporteA") = linea("Importe") * 0.34
+                    drnewline3("ImporteB") = linea("Importe") * 0.34
+                    Doc.dtAnalitica.Rows.Add(drnewline3)
+                ElseIf n_centrosCoste = 4 Then
+                    '-FILA 1
+                    Dim drnewline As DataRow = Doc.dtAnalitica.NewRow
+                    drnewline(pkDestino) = linea(pkDestino)
+                    drnewline("idcentrocoste") = nobra
+                    drnewline("porcentaje") = "25"
+                    drnewline("Importe") = linea("Importe") * 0.25
+                    drnewline("ImporteA") = linea("Importe") * 0.25
+                    drnewline("ImporteB") = linea("Importe") * 0.25
+                    Doc.dtAnalitica.Rows.Add(drnewline)
+
+                    '-FILA 2
+                    Dim drnewline2 As DataRow = Doc.dtAnalitica.NewRow
+                    drnewline2 = Doc.dtAnalitica.NewRow
+                    drnewline2(pkDestino) = linea(pkDestino)
+                    drnewline2("idcentrocoste") = dt2(0)("NObra2").ToString
+                    drnewline2("porcentaje") = "25"
+                    drnewline2("Importe") = linea("Importe") * 0.25
+                    drnewline2("ImporteA") = linea("Importe") * 0.25
+                    drnewline2("ImporteB") = linea("Importe") * 0.25
+                    Doc.dtAnalitica.Rows.Add(drnewline2)
+
+                    '-FILA 3
+                    Dim drnewline3 As DataRow = Doc.dtAnalitica.NewRow
+                    drnewline3 = Doc.dtAnalitica.NewRow
+                    drnewline3(pkDestino) = linea(pkDestino)
+                    drnewline3("idcentrocoste") = dt2(0)("NObra3").ToString
+                    drnewline3("porcentaje") = "25"
+                    drnewline3("Importe") = linea("Importe") * 0.25
+                    drnewline3("ImporteA") = linea("Importe") * 0.25
+                    drnewline3("ImporteB") = linea("Importe") * 0.25
+                    Doc.dtAnalitica.Rows.Add(drnewline3)
+                    '-FILA 4
+                    Dim drnewline4 As DataRow = Doc.dtAnalitica.NewRow
+                    drnewline4 = Doc.dtAnalitica.NewRow
+                    drnewline4(pkDestino) = linea(pkDestino)
+                    drnewline4("idcentrocoste") = dt2(0)("NObra4").ToString
+                    drnewline4("porcentaje") = "25"
+                    drnewline4("Importe") = linea("Importe") * 0.25
+                    drnewline4("ImporteA") = linea("Importe") * 0.25
+                    drnewline4("ImporteB") = linea("Importe") * 0.25
+                    Doc.dtAnalitica.Rows.Add(drnewline4)
                 End If
             Next
+
+            'For Each linea As DataRow In Doc.dtLineas.Select()
+            '    Dim UltimaRow As DataRow
+            '    Dim Acum As Double = 0 : Dim AcumA As Double = 0 : Dim AcumB As Double = 0
+            '    Dim HayAnalitica As Boolean = False
+
+            '    Dim lineaAnalitica As DataRow
+            '    Dim drNewLine As DataRow = Doc.dtAnalitica.NewRow
+            '    drNewLine(pkDestino) = linea(pkDestino)
+            '    drNewLine("IDCentroCoste") = nobra
+            '    drNewLine("Porcentaje") = "100"
+            '    drNewLine("Importe") = linea("Importe")
+
+            '    Dim ValAyB As New ValoresAyB(New DataRowPropertyAccessor(drNewLine), Doc.IDMoneda, Doc.CambioA, Doc.CambioB)
+            '    ProcessServer.ExecuteTask(Of ValoresAyB, IPropertyAccessor)(AddressOf NegocioGeneral.MantenimientoValoresAyB, ValAyB, services)
+            '    Acum += drNewLine("Importe")
+            '    AcumA += drNewLine("ImporteA")
+            '    AcumB += drNewLine("ImporteB")
+            '    UltimaRow = drNewLine
+
+            '    Doc.dtAnalitica.Rows.Add(drNewLine)
+
+            '    Dim dtCentrosCoste As DataTable = Doc.dtAnalitica
+            '    HayAnalitica = True
+            '    If HayAnalitica Then
+            '        If Acum <> linea("Importe") Then
+            '            UltimaRow("Importe") += linea("Importe") - Acum
+            '        End If
+            '        If AcumA <> linea("ImporteA") Then
+            '            UltimaRow("ImporteA") += linea("ImporteA") - AcumA
+            '        End If
+            '        If AcumB <> linea("ImporteB") Then
+            '            UltimaRow("ImporteB") += linea("ImporteB") - AcumB
+            '        End If
+            '    End If
+            'Next
 
         Catch ex As Exception
 
         End Try
 
+        Dim dtCentrosCoste As DataTable = Doc.dtAnalitica
     End Sub
 
 
